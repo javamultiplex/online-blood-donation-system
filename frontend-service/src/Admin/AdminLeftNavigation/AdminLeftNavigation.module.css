@@ -1,0 +1,23 @@
+.tab {
+    color: #bb0a1e;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 30px;
+}
+
+.tab:hover {
+    background-color: #DCDCDC;
+}
+
+.hr {
+    margin-left: 30px;
+}
+
+.settings {
+    color: #bb0a1e;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 30px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}

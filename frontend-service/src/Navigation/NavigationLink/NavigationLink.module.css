@@ -1,0 +1,14 @@
+.navlink{
+    color: white;
+    font-weight: bold;
+
+}
+
+.FontAwesomeIcon{
+    margin-right: 6px !important;
+}
+
+.active {
+    color: white;
+    text-decoration: none;
+}

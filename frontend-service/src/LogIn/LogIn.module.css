@@ -1,0 +1,29 @@
+.Form {
+  width: 100%;
+  max-width: 600px;
+  height: 100%;
+  padding: 15px;
+  margin: auto;
+}
+
+.FontAwesomeIcon {
+  margin-right: 2px;
+}
+
+.formHeading{
+  text-align: center;
+  color: #bb0a1e;
+}
+
+.Login{
+  margin-top: 100px;
+}
+
+.Label{
+  color: #bb0a1e;
+  font-weight: bold;
+}
+
+.FontAwesomeIcon{
+  margin-right: 5px;
+}

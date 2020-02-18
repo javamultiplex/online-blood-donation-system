@@ -1,0 +1,32 @@
+.LeftColumn {
+    margin-top: 150px;
+    color: #bb0a1e;
+    font-weight: bolder;
+}
+
+.RightColumn {
+    margin-top: 160px;
+}
+
+.Label {
+    color: #bb0a1e;
+    font-weight: bold;
+}
+
+.Label::after {
+    content: ' *';
+    color: red;
+}
+
+.contactDetail {
+    margin-left: 12px;
+}
+
+.SocialIcon {
+    margin: 5px;
+}
+
+.SocialIconLeft{
+    margin-top: 5px;
+    margin-right: 5px;
+}

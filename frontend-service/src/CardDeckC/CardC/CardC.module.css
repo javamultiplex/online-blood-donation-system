@@ -1,0 +1,18 @@
+.CardTitle{
+    font-weight: bold;
+    color: #bb0a1e;
+}
+
+.ButtonShow{
+    background-color: #bb0a1e !important;
+}
+
+.ButtonHide{
+    background-color: #bb0a1e !important;
+    display: none !important;
+}
+
+.NavLink{
+    text-decoration: none !important;
+    color: white;
+}

@@ -1,0 +1,14 @@
+.Form {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.Label {
+    color: #bb0a1e;
+    font-weight: bold;
+}
+
+.Label::after {
+    content: ' *';
+    color: #bb0a1e;
+}

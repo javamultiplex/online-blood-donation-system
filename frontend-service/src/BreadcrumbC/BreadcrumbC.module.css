@@ -1,0 +1,13 @@
+.BreadcrumbItemHighlighted {
+    color: #bb0a1e !important;
+    font-weight: bold;
+    text-decoration: underline !important;
+}
+
+.BreadcrumbItem {
+    color: #bb0a1e !important;
+    cursor: pointer;
+}
+.FontAwesomeIcon{
+    margin-right: 5px !important;
+}
