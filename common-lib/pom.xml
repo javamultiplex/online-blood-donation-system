@@ -44,19 +44,4 @@
 			</exclusions>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<finalName>common-lib</finalName>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<mainClass>com.javamultiplex.Application</mainClass>
-				</configuration>
-			</plugin>
-		</plugins>
-
-	</build>
-
 </project>
