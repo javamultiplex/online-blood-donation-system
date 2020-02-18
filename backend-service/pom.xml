@@ -20,6 +20,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.javamultiplex</groupId>
+            <artifactId>common-lib</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
@@ -60,10 +65,14 @@
     </dependencies>
 
     <build>
+        <finalName>blood-donation-service</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.javamultiplex.Application</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>
