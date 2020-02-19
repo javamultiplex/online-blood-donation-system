@@ -1,12 +1,14 @@
 package com.javamultiplex.service;
 
 import com.javamultiplex.dto.ErrorResponseDTO;
+import com.javamultiplex.entity.Area;
 import com.javamultiplex.entity.City;
 import com.javamultiplex.entity.Country;
 import com.javamultiplex.entity.State;
 import com.javamultiplex.error.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +48,18 @@ public class CityService {
                     .build();
             throw new ServiceException(errorResponse);
         }
+        return stateService.saveCity(state, city);
+    }
+
+    /**
+     * @param city
+     * @param area
+     * @return
+     */
+    public Country saveArea(City city, Area area) {
+        area.setName(StringUtils.capitalize(area.getName().toLowerCase()));
+        city.addArea(area);
+        State state = city.getState();
         return stateService.saveCity(state, city);
     }
 
@@ -97,6 +111,17 @@ public class CityService {
     public Country delete(Long countryId, Long stateId, Long cityId) {
         City city = get(countryId, stateId, cityId);
         return stateService.delete(city);
+    }
+
+    /**
+     * @param area
+     * @return
+     */
+    public Country delete(Area area) {
+        City city = area.getCity();
+        city.removeArea(area);
+        State state = city.getState();
+        return stateService.saveCity(state, city);
     }
 
     /**

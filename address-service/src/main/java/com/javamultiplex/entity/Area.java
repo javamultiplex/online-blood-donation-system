@@ -24,7 +24,7 @@ public class Area implements Serializable {
     private Long id;
 
     @NotNull(message = "Area name is mandatory")
-    @Pattern(regexp = "^[a-zA-Z]+$", message = "Area name should be alphabetic")
+    @Pattern(regexp = "^[a-zA-Z ]+$", message = "Area name should be alphabetic")
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
