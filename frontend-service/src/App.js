@@ -39,6 +39,10 @@ import AddCountry from './Admin/AddCountry/AddCountry';
 import AddState from './Admin/AddState/AddState';
 import AddCity from './Admin/AddCity/AddCity';
 import AddArea from './Admin/AddArea/AddArea';
+import ViewCountry from './Admin/ViewCountry/ViewCountry';
+import ViewState from './Admin/ViewState/ViewState';
+import ViewCity from './Admin/ViewCity/ViewCity';
+import ViewArea from './Admin/ViewArea/ViewArea';
 library.add(faHome,
   faUsers,
   faEnvelope,
@@ -83,6 +87,10 @@ class App extends React.Component {
         <Route path="/admin/add-state" exact strict component={AddState} />
         <Route path="/admin/add-city" exact strict component={AddCity} />
         <Route path="/admin/add-area" exact strict component={AddArea} />
+        <Route path="/admin/view-country" exact strict component={ViewCountry}/>
+        <Route path="/admin/view-state" exact strict component={ViewState}/>
+        <Route path="/admin/view-city" exact strict component={ViewCity}/>
+        <Route path="/admin/view-area" exact strict component={ViewArea}/>
       </>
     );
   }

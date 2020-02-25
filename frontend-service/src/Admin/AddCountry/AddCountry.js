@@ -57,7 +57,7 @@ class AddCountry extends React.Component {
                                     <tbody>
                                         <tr>
                                             <th>S.No</th>
-                                            <th>Country Name</th>
+                                            <th>Country</th>
                                             <th>Delete</th>
                                         </tr>
                                         <tr>
@@ -97,7 +97,9 @@ class AddCountry extends React.Component {
                                         </tr>
                                     </tbody>
                                 </Table>
-                                <Button color="danger" className={classes.Button}>View All</Button>
+                                <Button color="danger" 
+                                className={classes.Button}
+                                onClick={()=>this.props.history.push('/admin/view-country')}>View All</Button>
                             </Col>
                         </Row>
                     </Col>

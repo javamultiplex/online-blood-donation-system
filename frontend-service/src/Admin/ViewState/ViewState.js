@@ -1,24 +1,23 @@
 import React from 'react';
-import Dashboard from '../Dashboard/Dashboard';
-import DashboardPage from '../DashboardPage/DashboardPage';
-import Footer from '../../Footer/Footer';
-import AdminLeftNavigation from '../AdminLeftNavigation/AdminLeftNavigation';
-import AdminTopNavigation from '../AdminTopNavigation/AdminTopNavigation';
+import classes from './ViewState.module.css';
 import {
     Container,
     Row,
     Col,
+    Table,
+    Badge,
     Form,
     FormGroup,
     Label,
-    Input,
-    Table,
-    Badge,
-    Button
+    Input
 } from 'reactstrap';
-import classes from './AddState.module.css';
+import AdminTopNavigation from '../AdminTopNavigation/AdminTopNavigation';
+import Dashboard from '../Dashboard/Dashboard';
+import DashboardPage from '../DashboardPage/DashboardPage';
+import AdminLeftNavigation from '../AdminLeftNavigation/AdminLeftNavigation';
+import Footer from '../../Footer/Footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-class AddState extends React.Component {
+class ViewState extends React.Component {
     render() {
         return (
             <Container fluid>
@@ -32,7 +31,7 @@ class AddState extends React.Component {
                         <Dashboard />
                     </Col>
                     <Col xs="9">
-                        <DashboardPage icon="university" name="Add State" />
+                        <DashboardPage icon="university" name="View State Details" />
                     </Col>
                 </Row>
                 <Row>
@@ -42,7 +41,7 @@ class AddState extends React.Component {
                     <Col xs="9">
                         <Row>
                             <Col xs="6">
-                                <Form className={classes.Page}>
+                                <Form className={classes.Form}>
                                     <FormGroup>
                                         <Label for="country" className={classes.Label}>Country Name</Label>
                                         <Input type="select" name="country" id="country" required>
@@ -51,16 +50,13 @@ class AddState extends React.Component {
                                         </Input>
                                     </FormGroup>
                                     <FormGroup>
-                                        <Label for="state" className={classes.Label}>State Name</Label>
-                                        <Input type="text" name="state" id="state" required></Input>
-                                    </FormGroup>
-                                    <FormGroup>
-                                        <Input type="submit" className="btn btn-danger" value="Add State" />
+                                        <Input type="submit" value="View States" className="btn btn-danger"/>
                                     </FormGroup>
                                 </Form>
                             </Col>
                             <Col xs="6">
-                                <Table striped>
+                                <b>Total States : 12</b>
+                                <Table className={classes.Table} striped>
                                     <tbody>
                                         <tr>
                                             <th>S.No</th>
@@ -100,12 +96,6 @@ class AddState extends React.Component {
                                         </tr>
                                     </tbody>
                                 </Table>
-                                <Button
-                                    color="danger"
-                                    onClick={() => this.props.history.push('/admin/view-state')}
-                                    className={classes.Button}>
-                                    View All
-                                </Button>
                             </Col>
                         </Row>
                     </Col>
@@ -120,4 +110,4 @@ class AddState extends React.Component {
     }
 }
 
-export default AddState;
+export default ViewState;

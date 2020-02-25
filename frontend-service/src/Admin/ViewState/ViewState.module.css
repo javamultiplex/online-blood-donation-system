@@ -1,5 +1,13 @@
-.Page {
+.Form{
     margin-left: 30px;
+}
+
+.Badge{
+    margin-left: 15px;
+}
+
+.Table{
+    margin-top: 20px;
 }
 
 .Label {
@@ -10,12 +18,4 @@
 .Label::after {
     content: ' *';
     color: #bb0a1e;
-}
-
-.Badge {
-    margin-left: 15px;
-}
-
-.Button {
-    margin-bottom: 30px;
 }
