@@ -60,13 +60,11 @@ class ViewState extends React.Component {
                                     <tbody>
                                         <tr>
                                             <th>S.No</th>
-                                            <th>Country</th>
-                                            <th>State</th>
+                                            <th>State Name</th>
                                             <th>Delete</th>
                                         </tr>
                                         <tr>
                                             <td>1</td>
-                                            <td>India</td>
                                             <td>Delhi</td>
                                             <td>
                                                 <Badge color="danger" className={classes.Badge}>
@@ -76,7 +74,6 @@ class ViewState extends React.Component {
                                         </tr>
                                         <tr>
                                             <td>2</td>
-                                            <td>India</td>
                                             <td>Rajasthan</td>
                                             <td>
                                                 <Badge color="danger" className={classes.Badge}>
@@ -86,7 +83,6 @@ class ViewState extends React.Component {
                                         </tr>
                                         <tr>
                                             <td>3</td>
-                                            <td>Pakistan</td>
                                             <td>Karachi</td>
                                             <td>
                                                 <Badge color="danger" className={classes.Badge}>

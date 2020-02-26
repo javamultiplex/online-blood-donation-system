@@ -41,7 +41,7 @@ class ViewCountry extends React.Component {
                                 <tbody>
                                     <tr>
                                         <th>S.No</th>
-                                        <th>Country</th>
+                                        <th>Country Name</th>
                                         <th>Delete</th>
                                     </tr>
                                     <tr>

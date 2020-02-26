@@ -1,0 +1,21 @@
+.Form{
+    margin-left: 30px;
+}
+
+.Badge{
+    margin-left: 15px;
+}
+
+.Table{
+    margin-top: 20px;
+}
+
+.Label {
+    color: #bb0a1e;
+    font-weight: bold;
+}
+
+.Label::after {
+    content: ' *';
+    color: #bb0a1e;
+}
