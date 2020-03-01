@@ -1,52 +1,30 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
-import Dashboard from '../Dashboard/Dashboard';
-import DashboardPage from '../DashboardPage/DashboardPage';
+import { connect } from 'react-redux';
+import { Badge, Button, Col, Container, Form, FormGroup, Input, Label, Row, Table } from 'reactstrap';
 import Footer from '../../Footer/Footer';
+import {
+    addCountry,
+    deleteCountry
+} from '../../redux/actions/countryActions';
 import AdminLeftNavigation from '../AdminLeftNavigation/AdminLeftNavigation';
 import AdminTopNavigation from '../AdminTopNavigation/AdminTopNavigation';
-import {
-    Container,
-    Row,
-    Col,
-    Form,
-    FormGroup,
-    Input,
-    Table,
-    Label,
-    Badge,
-    Button
-} from 'reactstrap';
-import axios from 'axios';
+import Dashboard from '../Dashboard/Dashboard';
+import DashboardPage from '../DashboardPage/DashboardPage';
 import classes from './AddCountry.module.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 class AddCountry extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: '',
-            countries: []
+            name: ''
         }
     }
 
     handleSubmit = (event) => {
         event.preventDefault();
         console.log(this.state);
-
-        axios.post('http://localhost:9090/api/v1/country', this.state)
-            .then(response => {
-                console.log('Response is : ' + JSON.stringify(response.data));
-                this.setState({
-                    ...this.state,
-                    countries: this.state.countries.concat({
-                        id: response.data.id,
-                        name: response.data.name
-                    })
-                })
-                this.reset();
-            })
-            .catch(err => {
-                console.log(err);
-            })
+        this.props.addCountry(this.state);
+        this.reset();
     }
 
     changeHandler = (event) => {
@@ -59,17 +37,6 @@ class AddCountry extends React.Component {
         this.setState({
             name: ''
         })
-    }
-
-    deleteCountry = (id) => {
-        console.log('id is : ' + id);
-        axios.delete('http://localhost:9090/api/v1/country/' + id)
-            .then(response => {
-                console.log(response.data);
-            })
-            .catch(err => {
-                console.log(err)
-            })
     }
 
     render() {
@@ -115,7 +82,7 @@ class AddCountry extends React.Component {
                                             <th>Delete</th>
                                         </tr>
                                         {
-                                            this.state.countries.map((country, index) => (
+                                            this.props.countries.map((country, index) => (
                                                 <tr key={index}>
                                                     <td>{index + 1}</td>
                                                     <td>{country.name}</td>
@@ -123,7 +90,7 @@ class AddCountry extends React.Component {
                                                         <Badge
                                                             color="danger"
                                                             className={classes.Badge}
-                                                            onClick={() => this.deleteCountry(country.id)}>
+                                                            onClick={() => this.props.deleteCountry(country.id)}>
                                                             <FontAwesomeIcon icon="trash-alt" />
                                                         </Badge>
                                                     </td>
@@ -150,4 +117,18 @@ class AddCountry extends React.Component {
     }
 }
 
-export default AddCountry;
+const mapStateToProps = state => {
+    return {
+        countries: state.country.countries,
+    }
+
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        addCountry: (country) => dispatch(addCountry(country)),
+        deleteCountry: (id) => dispatch(deleteCountry(id))
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddCountry);
