@@ -8,6 +8,7 @@ const getAndDeleteCountryReducer = (state = initialState, action) => {
     switch (action.type) {
         case types.GET_ALL_COUNTRIES_SUCCESS:
             return {
+                ...state,
                 countries: action.payload
             }
         case types.DELETE_COUNTRY_SUCCESS:

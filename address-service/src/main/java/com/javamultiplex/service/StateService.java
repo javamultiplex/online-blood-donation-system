@@ -5,14 +5,17 @@ import com.javamultiplex.entity.City;
 import com.javamultiplex.entity.Country;
 import com.javamultiplex.entity.State;
 import com.javamultiplex.error.ServiceException;
+import com.javamultiplex.model.CountryDTO;
+import com.javamultiplex.model.StateDTO;
+import com.javamultiplex.model.StateList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class StateService {
@@ -29,7 +32,7 @@ public class StateService {
      * @param state
      * @return
      */
-    public Country save(Long countryId, State state) {
+    public StateDTO save(Long countryId, State state) {
         Country country = countryService.get(countryId);
         Set<State> states = country.getStates();
         String stateName = state.getName();
@@ -46,7 +49,14 @@ public class StateService {
                     .build();
             throw new ServiceException(errorResponse);
         }
-        return countryService.saveState(country, state);
+        Country response = countryService.saveState(country, state);
+        State expectedState = response
+                .getStates()
+                .stream()
+                .filter(s -> s.getName().equalsIgnoreCase(state.getName()))
+                .findFirst().get();
+        CountryDTO countryDTO=new CountryDTO(countryId, response.getName());
+        return new StateDTO(expectedState.getId(), expectedState.getName(), countryDTO);
     }
 
     public Country saveCity(State state, City city) {
@@ -88,9 +98,14 @@ public class StateService {
      * @param countryId
      * @return
      */
-    public List<State> get(Long countryId) {
+    public StateList get(Long countryId) {
         Country country = countryService.get(countryId);
-        return new ArrayList<>(country.getStates());
+        List<StateDTO> states = country
+                .getStates()
+                .stream()
+                .map(state -> new StateDTO(state.getId(), state.getName()))
+                .collect(Collectors.toList());
+        return new StateList(states, new CountryDTO(countryId, country.getName()));
     }
 
     /**
@@ -98,9 +113,10 @@ public class StateService {
      * @param stateId
      * @return
      */
-    public Country delete(Long countryId, Long stateId) {
+    public StateDTO delete(Long countryId, Long stateId) {
         State state = get(countryId, stateId);
-        return countryService.delete(state);
+        countryService.delete(state);
+        return new StateDTO(stateId, state.getName());
     }
 
     public Country delete(City city) {

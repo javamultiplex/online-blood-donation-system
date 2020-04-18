@@ -4,7 +4,6 @@ import {
     Container,
     Row,
     Col,
-    Table,
     Badge,
     Form,
     FormGroup,
@@ -20,6 +19,7 @@ import Footer from '../../Footer/Footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from 'react-redux';
 import { getAllCountries } from '../../redux/actions/country/getAndDeleteCountry';
+import { deleteState, getAllStates } from '../../redux/actions/state/getAndDeleteState';
 const customStyles = {
     headCells: {
         style: {
@@ -34,28 +34,49 @@ const customStyles = {
     },
 };
 
-var columns = [
-    {
-        name: 'State ID',
-        selector: 'id',
-        sortable: true
-    },
-    {
-        name: 'State Name',
-        selector: 'name',
-        sortable: true
-    },
-    {
-        name: 'Delete',
-        cell: row => <Badge color="danger" className={classes.Badge} onClick={() => this.props.deleteCountry(row.id)}><FontAwesomeIcon icon="trash-alt" /></Badge>
-    },
-];
-
 class ViewState extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            countryId: ''
+        }
+    }
+
     componentDidMount() {
         this.props.getAllCountries();
     }
+
+    submitHandler = (event) => {
+        event.preventDefault();
+        this.props.getAllStates(this.state.countryId);
+    }
+
+    changeHandler = (event) => {
+        this.setState({
+            countryId: event.target.value
+        })
+    }
+
     render() {
+        const {countryId}=this.state;
+        var columns = [
+            {
+                name: 'State ID',
+                selector: 'id',
+                sortable: true
+            },
+            {
+                name: 'State Name',
+                selector: 'name',
+                sortable: true
+            },
+            {
+                name: 'Delete',
+                cell: row => <Badge color="danger" className={classes.Badge} onClick={() => this.props.deleteState(this.state.countryId, row.id)}><FontAwesomeIcon icon="trash-alt" /></Badge>
+            },
+        ];
+
         return (
             <Container fluid>
                 <Row>
@@ -78,10 +99,11 @@ class ViewState extends React.Component {
                     <Col xs="9">
                         <Row>
                             <Col xs="6">
-                                <Form className={classes.Form}>
+                                <Form className={classes.Form} onSubmit={this.submitHandler}>
                                     <FormGroup>
                                         <Label for="country" className={classes.Label}>Country Name</Label>
-                                        <Input type="select" name="country" id="country" required>
+                                        <Input type="select" name="country" id="country" onChange={this.changeHandler} value={countryId} vrequired>
+                                            <option value="">Select Country</option>
                                             {
                                                 this.props.countries.map((country, index) =>
                                                     (<option key={index} value={country.id}>{country.name}</option>))
@@ -94,43 +116,19 @@ class ViewState extends React.Component {
                                 </Form>
                             </Col>
                             <Col xs="6">
-                                <b>Total States : 12</b>
-                                <Table className={classes.Table} striped>
-                                    <tbody>
-                                        <tr>
-                                            <th>S.No</th>
-                                            <th>State Name</th>
-                                            <th>Delete</th>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Delhi</td>
-                                            <td>
-                                                <Badge color="danger" className={classes.Badge}>
-                                                    <FontAwesomeIcon icon="trash-alt" />
-                                                </Badge>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Rajasthan</td>
-                                            <td>
-                                                <Badge color="danger" className={classes.Badge}>
-                                                    <FontAwesomeIcon icon="trash-alt" />
-                                                </Badge>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>Karachi</td>
-                                            <td>
-                                                <Badge color="danger" className={classes.Badge}>
-                                                    <FontAwesomeIcon icon="trash-alt" />
-                                                </Badge>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </Table>
+                                <div className={classes.Main}>
+                                    <DataTable
+                                        noHeader={true}
+                                        striped={true}
+                                        columns={columns}
+                                        data={this.props.states}
+                                        pagination
+                                        paginationPerPage={5}
+                                        pointerOnHover={true}
+                                        paginationRowsPerPageOptions={[5, 10, 15, 20, 25]}
+                                        customStyles={customStyles}
+                                    />
+                                </div>
                             </Col>
                         </Row>
                     </Col>
@@ -146,13 +144,16 @@ class ViewState extends React.Component {
 }
 const mapStateToProps = state => {
     return {
-        countries: state.getAndDeleteCountry.countries
+        countries: state.getAndDeleteCountry.countries,
+        states: state.getAndDeleteState.states
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        getAllCountries: () => dispatch(getAllCountries())
+        getAllCountries: () => dispatch(getAllCountries()),
+        deleteState: (countryId, stateId) => dispatch(deleteState(countryId, stateId)),
+        getAllStates: (countryId) => dispatch(getAllStates(countryId))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ViewState);
