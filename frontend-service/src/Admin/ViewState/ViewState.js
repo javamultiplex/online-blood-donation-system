@@ -11,13 +11,50 @@ import {
     Label,
     Input
 } from 'reactstrap';
+import DataTable from 'react-data-table-component';
 import AdminTopNavigation from '../AdminTopNavigation/AdminTopNavigation';
 import Dashboard from '../Dashboard/Dashboard';
 import DashboardPage from '../DashboardPage/DashboardPage';
 import AdminLeftNavigation from '../AdminLeftNavigation/AdminLeftNavigation';
 import Footer from '../../Footer/Footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { connect } from 'react-redux';
+import { getAllCountries } from '../../redux/actions/country/getAndDeleteCountry';
+const customStyles = {
+    headCells: {
+        style: {
+            fontWeight: 'bold',
+            fontSize: '15px'
+        },
+    },
+    cells: {
+        style: {
+            fontSize: '15px'
+        },
+    },
+};
+
+var columns = [
+    {
+        name: 'State ID',
+        selector: 'id',
+        sortable: true
+    },
+    {
+        name: 'State Name',
+        selector: 'name',
+        sortable: true
+    },
+    {
+        name: 'Delete',
+        cell: row => <Badge color="danger" className={classes.Badge} onClick={() => this.props.deleteCountry(row.id)}><FontAwesomeIcon icon="trash-alt" /></Badge>
+    },
+];
+
 class ViewState extends React.Component {
+    componentDidMount() {
+        this.props.getAllCountries();
+    }
     render() {
         return (
             <Container fluid>
@@ -45,12 +82,14 @@ class ViewState extends React.Component {
                                     <FormGroup>
                                         <Label for="country" className={classes.Label}>Country Name</Label>
                                         <Input type="select" name="country" id="country" required>
-                                            <option value="India">India</option>
-                                            <option value="Pakistan">Pakistan</option>
+                                            {
+                                                this.props.countries.map((country, index) =>
+                                                    (<option key={index} value={country.id}>{country.name}</option>))
+                                            }
                                         </Input>
                                     </FormGroup>
                                     <FormGroup>
-                                        <Input type="submit" value="View States" className="btn btn-danger"/>
+                                        <Input type="submit" value="View States" className="btn btn-danger" />
                                     </FormGroup>
                                 </Form>
                             </Col>
@@ -105,5 +144,15 @@ class ViewState extends React.Component {
         );
     }
 }
+const mapStateToProps = state => {
+    return {
+        countries: state.getAndDeleteCountry.countries
+    }
+}
 
-export default ViewState;
+const mapDispatchToProps = dispatch => {
+    return {
+        getAllCountries: () => dispatch(getAllCountries())
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(ViewState);

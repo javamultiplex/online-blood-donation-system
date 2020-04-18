@@ -17,8 +17,15 @@ import {
     Button
 } from 'reactstrap';
 import classes from './AddState.module.css';
+import { connect } from 'react-redux';
+import { getAllCountries } from '../../redux/actions/country/getAndDeleteCountry';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 class AddState extends React.Component {
+
+    componentDidMount() {
+        this.props.getAllCountries();
+    }
+
     render() {
         return (
             <Container fluid>
@@ -46,8 +53,10 @@ class AddState extends React.Component {
                                     <FormGroup>
                                         <Label for="country" className={classes.Label}>Country Name</Label>
                                         <Input type="select" name="country" id="country" required>
-                                            <option value="India">India</option>
-                                            <option value="Pakistan">Pakistan</option>
+                                        {
+                                            this.props.countries.map((country,index) => 
+                                            <option key={index} value={country.id}>{country.name}</option>)
+                                        }
                                         </Input>
                                     </FormGroup>
                                     <FormGroup>
@@ -120,4 +129,16 @@ class AddState extends React.Component {
     }
 }
 
-export default AddState;
+const mapStateToProps = state => {
+    return {
+        countries: state.getAndDeleteCountry.countries
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        getAllCountries: () => dispatch(getAllCountries())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddState);

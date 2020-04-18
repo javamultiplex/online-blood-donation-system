@@ -1,5 +1,7 @@
-import countryReducer from './countryReducer';
+import addCountryReducer from './country/addCountryReducer';
+import getAndDeleteCountryReducer from './country/getAndDeleteCountryReducer';
 import { combineReducers } from 'redux';
 export const rootReducer = combineReducers({
-    country: countryReducer
+    addcountry: addCountryReducer,
+    getAndDeleteCountry: getAndDeleteCountryReducer
 });

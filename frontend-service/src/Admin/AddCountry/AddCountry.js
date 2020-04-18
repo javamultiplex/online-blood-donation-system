@@ -1,12 +1,10 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { connect } from 'react-redux';
-import { Badge, Button, Col, Container, Form, FormGroup, Input, Label, Row, Table } from 'reactstrap';
+import { Button, Col, Container, Form, FormGroup, Input, Label, Row, Table } from 'reactstrap';
 import Footer from '../../Footer/Footer';
 import {
-    addCountry,
-    deleteCountry
-} from '../../redux/actions/countryActions';
+    addCountry
+} from '../../redux/actions/country/addCountry';
 import AdminLeftNavigation from '../AdminLeftNavigation/AdminLeftNavigation';
 import AdminTopNavigation from '../AdminTopNavigation/AdminTopNavigation';
 import Dashboard from '../Dashboard/Dashboard';
@@ -16,14 +14,20 @@ class AddCountry extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: ''
+            name: '',
+            countries: []
         }
     }
 
     handleSubmit = (event) => {
         event.preventDefault();
-        console.log(this.state);
         this.props.addCountry(this.state);
+        this.setState({
+            ...this.state,
+            countries: this.state.countries.concat({
+                name:this.state.name
+            })
+        })
         this.reset();
     }
 
@@ -79,25 +83,15 @@ class AddCountry extends React.Component {
                                         <tr>
                                             <th>S.No</th>
                                             <th>Country</th>
-                                            <th>Delete</th>
                                         </tr>
                                         {
-                                            this.props.countries.map((country, index) => (
+                                            this.state.countries.map((country, index) => (
                                                 <tr key={index}>
                                                     <td>{index + 1}</td>
                                                     <td>{country.name}</td>
-                                                    <td>
-                                                        <Badge
-                                                            color="danger"
-                                                            className={classes.Badge}
-                                                            onClick={() => this.props.deleteCountry(country.id)}>
-                                                            <FontAwesomeIcon icon="trash-alt" />
-                                                        </Badge>
-                                                    </td>
                                                 </tr>
                                             ))
                                         }
-
                                     </tbody>
                                 </Table>
                                 <Button color="danger"
@@ -117,18 +111,10 @@ class AddCountry extends React.Component {
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        countries: state.country.countries,
-    }
-
-};
-
 const mapDispatchToProps = dispatch => {
     return {
-        addCountry: (country) => dispatch(addCountry(country)),
-        deleteCountry: (id) => dispatch(deleteCountry(id))
+        addCountry: (country) => dispatch(addCountry(country))
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddCountry);
+export default connect(null,mapDispatchToProps)(AddCountry);

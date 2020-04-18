@@ -4,5 +4,9 @@ export const addCountry = (country) => {
 }
 
 export const deleteCountry = (countryId) => {
-    return axios.delete('http://localhost:9090/api/v1/country/' + countryId);
+    return axios.delete(`http://localhost:9090/api/v1/country/${countryId}`)
+}
+
+export const getAllCountries = () => {
+    return axios.get('http://localhost:9090/api/v1/country');
 }

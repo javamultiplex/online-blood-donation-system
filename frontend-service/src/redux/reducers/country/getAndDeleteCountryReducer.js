@@ -1,17 +1,15 @@
-import * as types from '../actions';
+import * as types from '../../actions/country';
 
 const initialState = {
     countries: []
 }
 
-const countryReducer = (state = initialState, action) => {
+const getAndDeleteCountryReducer = (state = initialState, action) => {
     switch (action.type) {
-        case types.ADD_COUNTRY_SUCCESS:
+        case types.GET_ALL_COUNTRIES_SUCCESS:
             return {
-                ...state,
-                countries: state.countries.concat(action.payload)
+                countries: action.payload
             }
-
         case types.DELETE_COUNTRY_SUCCESS:
             return {
                 ...state,
@@ -22,4 +20,4 @@ const countryReducer = (state = initialState, action) => {
     }
 }
 
-export default countryReducer;
+export default getAndDeleteCountryReducer;

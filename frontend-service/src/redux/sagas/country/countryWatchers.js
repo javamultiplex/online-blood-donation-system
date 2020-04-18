@@ -1,8 +1,9 @@
 import { takeLatest } from 'redux-saga/effects';
-import * as types from '../actions';
+import * as types from '../../actions/country';
 import {
     addCountryRequest,
-    deleteCountryRequest
+    deleteCountryRequest,
+    getAllCountriesRequest,
 } from './countrySagas';
 
 export function* watchAddCountryRequest() {
@@ -10,6 +11,9 @@ export function* watchAddCountryRequest() {
 }
 
 export function* watchDeleteCountryRequest() {
-    console.log('hey')
     yield takeLatest(types.DELETE_COUNTRY, deleteCountryRequest);
+}
+
+export function* watchGetAllCountriesRequest() {
+    yield takeLatest(types.GET_ALL_COUNTRIES, getAllCountriesRequest);
 }
