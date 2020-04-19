@@ -7,7 +7,8 @@ import {
 import { addStateSuccess } from '../../actions/state/addState';
 import {
     getAllStatesSuccess,
-    deleteStateSuccess
+    deleteStateSuccess,
+    getAllStatesError
 } from '../../actions/state/getAndDeleteState';
 
 export function* addStateRequest(request) {
@@ -49,5 +50,6 @@ export function* getAllStatesRequest(request) {
             message = errorResponse.data.userMessages;
         }
         console.error("Error comes while getting all the states : " + message);
+        yield put(getAllStatesError(error))
     }
 }

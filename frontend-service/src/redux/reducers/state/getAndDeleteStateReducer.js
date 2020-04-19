@@ -10,6 +10,10 @@ const getAndDeleteStateReducer = (state = initialState, action) => {
                 ...state,
                 states: action.payload
             }
+        case types.GET_ALL_STATES_ERROR:
+            return {
+                states: []
+            }
         case types.DELETE_STATE_SUCCESS:
             return {
                 ...state,

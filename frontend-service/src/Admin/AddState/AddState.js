@@ -4,6 +4,7 @@ import DashboardPage from '../DashboardPage/DashboardPage';
 import Footer from '../../Footer/Footer';
 import AdminLeftNavigation from '../AdminLeftNavigation/AdminLeftNavigation';
 import AdminTopNavigation from '../AdminTopNavigation/AdminTopNavigation';
+import {listCountries} from '../../util/addressUtil';
 import {
     Container,
     Row,
@@ -36,11 +37,10 @@ class AddState extends React.Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        console.log(this.state);
         this.props.addState(this.state.countryId, {
             'name': this.state.stateName
         });
-        setTimeout(()=>{
+        setTimeout(() => {
             this.setState({
                 ...this.state,
                 states: this.state.states.concat({
@@ -48,8 +48,8 @@ class AddState extends React.Component {
                     countryName: this.props.output.country.name
                 })
             })
-        },1000);
-        
+        }, 1000);
+
         this.reset();
     }
 
@@ -96,10 +96,7 @@ class AddState extends React.Component {
                                         <Label for="country" className={classes.Label}>Country Name</Label>
                                         <Input type="select" name="countryId" id="country" onChange={this.changeHandler} value={countryId} required>
                                             <option value="">Select Country</option>
-                                            {
-                                                this.props.countries.map((country, index) =>
-                                                    <option key={index} value={country.id}>{country.name}</option>)
-                                            }
+                                            {listCountries(this.props.countries)}
                                         </Input>
                                     </FormGroup>
                                     <FormGroup>
@@ -122,7 +119,7 @@ class AddState extends React.Component {
                                         {
                                             this.state.states.map((s, index) => (
                                                 <tr key={index}>
-                                                    <td>{index+1}</td>
+                                                    <td>{index + 1}</td>
                                                     <td>{s.countryName}</td>
                                                     <td>{s.name}</td>
                                                 </tr>

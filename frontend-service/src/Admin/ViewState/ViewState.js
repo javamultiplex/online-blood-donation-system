@@ -10,6 +10,7 @@ import {
     Label,
     Input
 } from 'reactstrap';
+import {listCountries} from '../../util/addressUtil';
 import DataTable from 'react-data-table-component';
 import AdminTopNavigation from '../AdminTopNavigation/AdminTopNavigation';
 import Dashboard from '../Dashboard/Dashboard';
@@ -47,6 +48,10 @@ class ViewState extends React.Component {
         this.props.getAllCountries();
     }
 
+    componentWillUnmount(){
+        this.props.getAllStates(-1);
+    }
+    
     submitHandler = (event) => {
         event.preventDefault();
         this.props.getAllStates(this.state.countryId);
@@ -102,11 +107,10 @@ class ViewState extends React.Component {
                                 <Form className={classes.Form} onSubmit={this.submitHandler}>
                                     <FormGroup>
                                         <Label for="country" className={classes.Label}>Country Name</Label>
-                                        <Input type="select" name="country" id="country" onChange={this.changeHandler} value={countryId} vrequired>
+                                        <Input type="select" name="country" id="country" onChange={this.changeHandler} value={countryId} required>
                                             <option value="">Select Country</option>
                                             {
-                                                this.props.countries.map((country, index) =>
-                                                    (<option key={index} value={country.id}>{country.name}</option>))
+                                                listCountries(this.props.countries)
                                             }
                                         </Input>
                                     </FormGroup>
