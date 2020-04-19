@@ -6,6 +6,10 @@ import com.javamultiplex.entity.City;
 import com.javamultiplex.entity.Country;
 import com.javamultiplex.entity.State;
 import com.javamultiplex.error.ServiceException;
+import com.javamultiplex.model.CityDTO;
+import com.javamultiplex.model.CityList;
+import com.javamultiplex.model.CountryDTO;
+import com.javamultiplex.model.StateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -14,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class CityService {
@@ -31,7 +36,7 @@ public class CityService {
      * @param city
      * @return
      */
-    public Country save(Long countryId, Long stateId, City city) {
+    public CityDTO save(Long countryId, Long stateId, City city) {
         State state = stateService.get(countryId, stateId);
         Set<City> cities = state.getCities();
         String cityName = city.getName();
@@ -48,7 +53,22 @@ public class CityService {
                     .build();
             throw new ServiceException(errorResponse);
         }
-        return stateService.saveCity(state, city);
+        Country country = stateService.saveCity(state, city);
+        CountryDTO countryDTO=new CountryDTO(countryId, country.getName());
+        StateDTO stateDTO=new StateDTO(stateId, state.getName(), countryDTO);
+        State expectedState = country
+                .getStates()
+                .stream()
+                .filter(s -> s.getId().equals(stateId))
+                .findAny()
+                .get();
+        City expectedCity = expectedState
+                .getCities()
+                .stream()
+                .filter(c -> c.getName().equalsIgnoreCase(city.getName()))
+                .findAny()
+                .get();
+        return new CityDTO(expectedCity.getId(), expectedCity.getName(), stateDTO);
     }
 
     /**
@@ -97,9 +117,16 @@ public class CityService {
      * @param stateId
      * @return
      */
-    public List<City> get(Long countryId, Long stateId) {
+    public CityList get(Long countryId, Long stateId) {
         State state = stateService.get(countryId, stateId);
-        return new ArrayList<>(state.getCities());
+        List<CityDTO> cities = state
+                .getCities()
+                .stream()
+                .map(city -> new CityDTO(city.getId(), city.getName()))
+                .collect(Collectors.toList());
+        Country country = state.getCountry();
+        StateDTO stateDTO=new StateDTO(state.getId(), state.getName(), new CountryDTO(countryId, country.getName()));
+        return new CityList(cities, stateDTO);
     }
 
     /**
@@ -108,9 +135,10 @@ public class CityService {
      * @param cityId
      * @return
      */
-    public Country delete(Long countryId, Long stateId, Long cityId) {
+    public CityDTO delete(Long countryId, Long stateId, Long cityId) {
         City city = get(countryId, stateId, cityId);
-        return stateService.delete(city);
+        stateService.delete(city);
+        return new CityDTO(cityId, city.getName());
     }
 
     /**

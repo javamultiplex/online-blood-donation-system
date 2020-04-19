@@ -10,7 +10,7 @@ import {
     Label,
     Input
 } from 'reactstrap';
-import {listCountries} from '../../util/addressUtil';
+import { listData } from '../../util/commonUtil';
 import DataTable from 'react-data-table-component';
 import AdminTopNavigation from '../AdminTopNavigation/AdminTopNavigation';
 import Dashboard from '../Dashboard/Dashboard';
@@ -40,7 +40,8 @@ class ViewState extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            countryId: ''
+            countryId: '',
+            states: []
         }
     }
 
@@ -48,23 +49,36 @@ class ViewState extends React.Component {
         this.props.getAllCountries();
     }
 
-    componentWillUnmount(){
-        this.props.getAllStates(-1);
-    }
-    
     submitHandler = (event) => {
         event.preventDefault();
         this.props.getAllStates(this.state.countryId);
+        setTimeout(() => {
+            this.setState({
+                ...this.state,
+                states: this.props.states
+            })
+        }, 1000);
+    }
+
+    deleteHandler = (stateId) => {
+        this.props.deleteState(this.state.countryId, stateId);
+        setTimeout(() => {
+            this.setState({
+                ...this.state,
+                states: this.props.states
+            })
+        }, 1000);
     }
 
     changeHandler = (event) => {
         this.setState({
+            ...this.state,
             countryId: event.target.value
         })
     }
 
     render() {
-        const {countryId}=this.state;
+        const { countryId } = this.state;
         var columns = [
             {
                 name: 'State ID',
@@ -78,7 +92,7 @@ class ViewState extends React.Component {
             },
             {
                 name: 'Delete',
-                cell: row => <Badge color="danger" className={classes.Badge} onClick={() => this.props.deleteState(this.state.countryId, row.id)}><FontAwesomeIcon icon="trash-alt" /></Badge>
+                cell: row => <Badge color="danger" className={classes.Badge} onClick={() => this.deleteHandler(row.id)}><FontAwesomeIcon icon="trash-alt" /></Badge>
             },
         ];
 
@@ -110,7 +124,7 @@ class ViewState extends React.Component {
                                         <Input type="select" name="country" id="country" onChange={this.changeHandler} value={countryId} required>
                                             <option value="">Select Country</option>
                                             {
-                                                listCountries(this.props.countries)
+                                                listData(this.props.countries)
                                             }
                                         </Input>
                                     </FormGroup>
@@ -125,7 +139,7 @@ class ViewState extends React.Component {
                                         noHeader={true}
                                         striped={true}
                                         columns={columns}
-                                        data={this.props.states}
+                                        data={this.state.states}
                                         pagination
                                         paginationPerPage={5}
                                         pointerOnHover={true}

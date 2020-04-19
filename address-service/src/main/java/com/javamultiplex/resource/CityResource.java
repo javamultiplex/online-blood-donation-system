@@ -2,6 +2,8 @@ package com.javamultiplex.resource;
 
 import com.javamultiplex.entity.City;
 import com.javamultiplex.entity.Country;
+import com.javamultiplex.model.CityDTO;
+import com.javamultiplex.model.CityList;
 import com.javamultiplex.service.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
+@CrossOrigin(origins = "*")
 public class CityResource {
 
     private final CityService cityService;
@@ -24,11 +27,11 @@ public class CityResource {
     }
 
     @PostMapping("/country/{countryId}/state/{stateId}/city")
-    public ResponseEntity<Country> save(@PathVariable Long countryId,
+    public ResponseEntity<CityDTO> save(@PathVariable Long countryId,
                                         @PathVariable Long stateId,
                                         @RequestBody City city) {
 
-        Country body = cityService.save(countryId, stateId, city);
+        CityDTO body = cityService.save(countryId, stateId, city);
         return new ResponseEntity<>(body, HttpStatus.CREATED);
     }
 
@@ -42,24 +45,18 @@ public class CityResource {
     }
 
     @GetMapping("/country/{countryId}/state/{stateId}/city")
-    public ResponseEntity<List<City>> get(@PathVariable Long countryId,
-                                          @PathVariable Long stateId) {
+    public CityList get(@PathVariable Long countryId,
+                                        @PathVariable Long stateId) {
 
-        List<City> body = cityService.get(countryId, stateId);
-        HttpStatus httpStatus = HttpStatus.OK;
-        if (CollectionUtils.isEmpty(body)) {
-            httpStatus = HttpStatus.NO_CONTENT;
-        }
-        return new ResponseEntity<>(body, httpStatus);
+        return cityService.get(countryId, stateId);
     }
 
     @DeleteMapping("/country/{countryId}/state/{stateId}/city/{cityId}")
-    public ResponseEntity<Country> delete(@PathVariable Long countryId,
+    public CityDTO delete(@PathVariable Long countryId,
                                           @PathVariable Long stateId,
                                           @PathVariable Long cityId) {
 
-        Country body = cityService.delete(countryId, stateId, cityId);
-        return new ResponseEntity<>(body, HttpStatus.OK);
+        return cityService.delete(countryId, stateId, cityId);
     }
 
     @PutMapping("/country/{countryId}/state/{stateId}/city/{cityId}")

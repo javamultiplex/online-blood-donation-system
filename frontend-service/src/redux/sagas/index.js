@@ -9,6 +9,12 @@ import {
     watchDeleteStateRequest,
     watchGetAllStatesRequest
 } from './state/stateWatchers';
+
+import {
+    watchAddCityRequest,
+    watchDeleteCityRequest,
+    watchGetAllCitiesRequest
+} from './city/cityWatchers';
 import { fork, all } from 'redux-saga/effects';
 
 export function* rootSaga() {
@@ -19,7 +25,10 @@ export function* rootSaga() {
             fork(watchGetAllCountriesRequest),
             fork(watchAddStateRequest),
             fork(watchDeleteStateRequest),
-            fork(watchGetAllStatesRequest)
+            fork(watchGetAllStatesRequest),
+            fork(watchAddCityRequest),
+            fork(watchDeleteCityRequest),
+            fork(watchGetAllCitiesRequest)
         ]
     )
 } 

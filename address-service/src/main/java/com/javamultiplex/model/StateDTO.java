@@ -1,5 +1,6 @@
 package com.javamultiplex.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 
 import java.io.Serializable;
@@ -13,6 +14,7 @@ public class StateDTO implements Serializable {
     private static final long serialVersionUID = -4124701226382899130L;
     private Long id;
     private String name;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private CountryDTO country;
 
     public StateDTO(Long id, String name, CountryDTO country) {

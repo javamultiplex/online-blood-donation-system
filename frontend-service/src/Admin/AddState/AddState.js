@@ -4,7 +4,7 @@ import DashboardPage from '../DashboardPage/DashboardPage';
 import Footer from '../../Footer/Footer';
 import AdminLeftNavigation from '../AdminLeftNavigation/AdminLeftNavigation';
 import AdminTopNavigation from '../AdminTopNavigation/AdminTopNavigation';
-import {listCountries} from '../../util/addressUtil';
+import {listData} from '../../util/commonUtil';
 import {
     Container,
     Row,
@@ -96,7 +96,7 @@ class AddState extends React.Component {
                                         <Label for="country" className={classes.Label}>Country Name</Label>
                                         <Input type="select" name="countryId" id="country" onChange={this.changeHandler} value={countryId} required>
                                             <option value="">Select Country</option>
-                                            {listCountries(this.props.countries)}
+                                            {listData(this.props.countries)}
                                         </Input>
                                     </FormGroup>
                                     <FormGroup>
