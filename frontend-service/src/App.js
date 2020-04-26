@@ -11,7 +11,7 @@ import AdminNeedBlood from './Admin/AdminNeedBlood/AdminNeedBlood';
 import Home from './Home/Home';
 import About from './About/About';
 import Contact from './Contact/Contact'
-import Route from 'react-router-dom/Route';
+import {Route} from 'react-router-dom';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faHome,

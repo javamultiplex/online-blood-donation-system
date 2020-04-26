@@ -4,7 +4,9 @@ import com.javamultiplex.dto.ErrorResponseDTO;
 import com.javamultiplex.entity.Area;
 import com.javamultiplex.entity.City;
 import com.javamultiplex.entity.Country;
+import com.javamultiplex.entity.State;
 import com.javamultiplex.error.ServiceException;
+import com.javamultiplex.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class AreaService {
@@ -30,7 +33,7 @@ public class AreaService {
      * @param area
      * @return
      */
-    public Country save(Long countryId, Long stateId, Long cityId, Area area) {
+    public AreaDTO save(Long countryId, Long stateId, Long cityId, Area area) {
         City city = cityService.get(countryId, stateId, cityId);
         Set<Area> areas = city.getAreas();
         String areaName = area.getName();
@@ -47,7 +50,18 @@ public class AreaService {
                     .build();
             throw new ServiceException(errorResponse);
         }
-        return cityService.saveArea(city, area);
+        Country country = cityService.saveArea(city, area);
+        CountryDTO countryDTO = new CountryDTO(countryId, country.getName());
+        State state = city.getState();
+        StateDTO stateDTO=new StateDTO(stateId, state.getName(), countryDTO);
+        CityDTO cityDTO=new CityDTO(cityId, city.getName(),stateDTO);
+        Area expectedArea = city
+                .getAreas()
+                .stream()
+                .filter(a -> area.getName().equalsIgnoreCase(a.getName()))
+                .findAny()
+                .get();
+        return new AreaDTO(expectedArea.getId(), expectedArea.getName(), cityDTO);
     }
 
     /**
@@ -85,9 +99,19 @@ public class AreaService {
      * @param stateId
      * @return
      */
-    public List<Area> get(Long countryId, Long stateId, Long cityId) {
+    public AreaList get(Long countryId, Long stateId, Long cityId) {
         City city = cityService.get(countryId, stateId, cityId);
-        return new ArrayList<>(city.getAreas());
+        List<AreaDTO> areas = city
+                .getAreas()
+                .stream()
+                .map(area -> new AreaDTO(area.getId(), area.getName()))
+                .collect(Collectors.toList());
+        State state = city.getState();
+        Country country = state.getCountry();
+        CountryDTO countryDTO=new CountryDTO(countryId, country.getName());
+        StateDTO stateDTO=new StateDTO(stateId, state.getName(), countryDTO);
+        CityDTO cityDTO=new CityDTO(cityId, city.getName(),stateDTO);
+        return new AreaList(areas, cityDTO);
     }
 
 
@@ -98,9 +122,10 @@ public class AreaService {
      * @param areaId
      * @return
      */
-    public Country delete(Long countryId, Long stateId, Long cityId, Long areaId) {
+    public AreaDTO delete(Long countryId, Long stateId, Long cityId, Long areaId) {
         Area area = get(countryId, stateId, cityId, areaId);
-        return cityService.delete(area);
+        cityService.delete(area);
+        return new AreaDTO(areaId, area.getName());
     }
 
     /**
