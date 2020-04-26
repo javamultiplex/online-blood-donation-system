@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
@@ -16,22 +13,41 @@ import java.io.Serializable;
 @Setter
 @ToString
 public class BloodDonor implements Serializable {
+
     private static final long serialVersionUID = 6966174184731925614L;
+
     @Id
     @GeneratedValue
     private Long id;
+
+    @Column(name = "NAME")
     private String name;
+
+    @Column(name = "FATHER_NAME")
     private String fatherName;
+
+    @Column(name = "GENDER")
     private String gender;
+
+    @Column(name = "BIRTH_DATE")
     private String dob;
+
+    @Column(name = "BLOOD_GROUP")
     private String bloodGroup;
+
+    @Column(name = "BODY_WEIGHT")
     private String bodyWeight;
+
+    @Column(name = "EMAIL")
     private String emailId;
-    private String state;
-    private String city;
-    private String area;
-    private String pincode;
-    private String address;
+
+    @Column(name = "MOBILE")
     private String phoneNumber;
-//    private String image;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ADDRESS_ID", referencedColumnName = "id")
+    private Address address;
+
+    @Column(name = "PROFILE_IMAGE")
+    private byte[] image;
 }
