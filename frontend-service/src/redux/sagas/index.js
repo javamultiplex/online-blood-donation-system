@@ -22,6 +22,10 @@ import {
     watchGetAllAreasRequest
 } from './area/areaWatchers';
 
+import {
+    watchRegisterDonorRequest
+} from './donor/donorWatchers';
+
 import { fork, all } from 'redux-saga/effects';
 
 export function* rootSaga() {
@@ -38,7 +42,8 @@ export function* rootSaga() {
             fork(watchGetAllCitiesRequest),
             fork(watchAddAreaRequest),
             fork(watchDeleteAreaRequest),
-            fork(watchGetAllAreasRequest)
+            fork(watchGetAllAreasRequest),
+            fork(watchRegisterDonorRequest)
         ]
     )
 } 

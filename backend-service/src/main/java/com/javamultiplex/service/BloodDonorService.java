@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.javamultiplex.dto.ErrorResponseDTO;
 import com.javamultiplex.entity.BloodDonor;
 import com.javamultiplex.error.ServiceException;
+import com.javamultiplex.mapper.BloodDonorObjectMapper;
+import com.javamultiplex.model.BloodDonorDTO;
 import com.javamultiplex.repository.BloodDonorRepository;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,16 +23,19 @@ import java.io.IOException;
 public class BloodDonorService {
 
     private final BloodDonorRepository bloodDonorRepository;
+    private final BloodDonorObjectMapper bloodDonorObjectMapper;
 
     @Autowired
-    public BloodDonorService(BloodDonorRepository bloodDonorRepository) {
+    public BloodDonorService(BloodDonorRepository bloodDonorRepository, BloodDonorObjectMapper bloodDonorObjectMapper) {
         this.bloodDonorRepository = bloodDonorRepository;
+        this.bloodDonorObjectMapper = bloodDonorObjectMapper;
     }
 
     public BloodDonor register(String request, MultipartFile profileImage) {
-        BloodDonor bloodDonor = null;
+        System.out.println("Request is : " + request);
+        BloodDonorDTO bloodDonorDTO = null;
         try {
-            bloodDonor = new ObjectMapper().readValue(request, BloodDonor.class);
+            bloodDonorDTO = new ObjectMapper().readValue(request, BloodDonorDTO.class);
         } catch (JsonProcessingException e) {
             throw new ServiceException(ErrorResponseDTO
                     .builder()
@@ -39,7 +44,7 @@ public class BloodDonorService {
                     .statusCode(500)
                     .build());
         }
-
+        BloodDonor bloodDonor = bloodDonorObjectMapper.map(bloodDonorDTO);
         try {
             bloodDonor.setImage(profileImage.getBytes());
         } catch (IOException e) {

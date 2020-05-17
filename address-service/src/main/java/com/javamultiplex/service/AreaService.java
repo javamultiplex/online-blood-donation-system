@@ -127,19 +127,4 @@ public class AreaService {
         cityService.delete(area);
         return new AreaDTO(areaId, area.getName());
     }
-
-    /**
-     * @param countryId
-     * @param stateId
-     * @param cityId
-     * @param areaId
-     * @param updateArea
-     * @return
-     */
-    public Country update(Long countryId, Long stateId, Long cityId, Long areaId, Area updateArea) {
-        Area area = get(countryId, stateId, cityId, areaId);
-        area.setName(updateArea.getName());
-        City city = area.getCity();
-        return cityService.saveArea(city, area);
-    }
 }

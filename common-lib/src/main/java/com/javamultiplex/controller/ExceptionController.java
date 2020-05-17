@@ -4,6 +4,7 @@ import com.javamultiplex.constant.AppConstants;
 import com.javamultiplex.dto.ErrorResponseDTO;
 import com.javamultiplex.error.ServiceException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.MDC;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpHeaders;
@@ -70,7 +71,22 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
         String trackingId = MDC.get(AppConstants.TRACKING_ID);
         ErrorResponseDTO errorResponse = ex.getErrorResponseDTO();
         errorResponse.setTrackingId(trackingId);
-        log.error("Exception occurred : ", ex);
+        log.error("Exception occurred : {}", errorResponse.getDeveloperMessages().get(0));
         return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorResponse.getStatusCode()));
+    }
+
+    @ExceptionHandler(Exception.class)
+    protected ResponseEntity<ErrorResponseDTO> handleOtherExceptions(Exception ex) {
+        String trackingId = MDC.get(AppConstants.TRACKING_ID);
+        String developerMessage = ExceptionUtils.getRootCauseMessage(ex);
+        ErrorResponseDTO errorResponse = ErrorResponseDTO
+                .builder()
+                .userMessage("Internal Server Exception occurred while processing request.")
+                .developerMessage(developerMessage)
+                .trackingId(trackingId)
+                .statusCode(500)
+                .build();
+        log.error("Exception occurred : ", ex);
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(500));
     }
 }

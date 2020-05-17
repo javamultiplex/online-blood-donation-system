@@ -1,5 +1,6 @@
 package com.javamultiplex.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -11,18 +12,13 @@ import java.io.Serializable;
  * @author Rohit Agarwal on 26/04/20 9:17 pm
  * @copyright www.javamultiplex.com
  */
-@Entity
-@Table(name = "ADDRESS")
 @Getter
 @Setter
 @ToString
+@Embeddable
 public class Address implements Serializable {
 
     private static final long serialVersionUID = 4550072675127556996L;
-
-    @GeneratedValue
-    @Id
-    private Long id;
 
     @Column(name = "COUNTRY_NAME")
     private String country;

@@ -59,14 +59,4 @@ public class CityResource {
         return cityService.delete(countryId, stateId, cityId);
     }
 
-    @PutMapping("/country/{countryId}/state/{stateId}/city/{cityId}")
-    public ResponseEntity<Country> update(@PathVariable Long countryId,
-                                          @PathVariable Long stateId,
-                                          @PathVariable Long cityId,
-                                          @Valid @RequestBody City city) {
-
-        Country body = cityService.update(countryId, stateId, cityId, city);
-        return new ResponseEntity<>(body, HttpStatus.OK);
-    }
-
 }

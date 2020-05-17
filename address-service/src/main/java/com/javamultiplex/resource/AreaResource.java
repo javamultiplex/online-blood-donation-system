@@ -62,15 +62,4 @@ public class AreaResource {
 
     }
 
-    @PutMapping("/country/{countryId}/state/{stateId}/city/{cityId}/area/{areaId}")
-    public ResponseEntity<Country> update(@PathVariable Long countryId,
-                                          @PathVariable Long stateId,
-                                          @PathVariable Long cityId,
-                                          @PathVariable Long areaId,
-                                          @Valid @RequestBody Area area) {
-
-        Country body = areaService.update(countryId, stateId, cityId, areaId, area);
-        return new ResponseEntity<>(body, HttpStatus.OK);
-    }
-
 }

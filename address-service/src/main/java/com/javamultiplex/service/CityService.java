@@ -152,17 +152,4 @@ public class CityService {
         return stateService.saveCity(state, city);
     }
 
-    /**
-     * @param countryId
-     * @param stateId
-     * @param cityId
-     * @param updateCity
-     * @return
-     */
-    public Country update(Long countryId, Long stateId, Long cityId, City updateCity) {
-        City city = get(countryId, stateId, cityId);
-        city.setName(updateCity.getName());
-        State state = city.getState();
-        return stateService.saveCity(state, city);
-    }
 }

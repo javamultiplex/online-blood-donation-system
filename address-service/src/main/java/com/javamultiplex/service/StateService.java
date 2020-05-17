@@ -125,17 +125,4 @@ public class StateService {
         Country country = state.getCountry();
         return countryService.saveState(country, state);
     }
-
-    /**
-     * @param countryId
-     * @param stateId
-     * @param updatedState
-     * @return
-     */
-    public Country update(Long countryId, Long stateId, State updatedState) {
-        State state = get(countryId, stateId);
-        state.setName(updatedState.getName());
-        Country country = state.getCountry();
-        return countryService.saveState(country, state);
-    }
 }

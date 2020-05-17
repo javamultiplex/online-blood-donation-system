@@ -8,7 +8,7 @@
     box-shadow:  0px 1px 10px 4px  #bb0a1e;
 }
 
-.Label, .photo{
+.Label, .middle, .last{
     color: #bb0a1e;
     font-weight: bold;
 }

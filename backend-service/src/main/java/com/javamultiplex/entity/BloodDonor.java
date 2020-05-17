@@ -20,17 +20,17 @@ public class BloodDonor implements Serializable {
     @GeneratedValue
     private Long id;
 
-    @Column(name = "NAME")
-    private String name;
+    @Column(name = "FIRST_NAME")
+    private String firstName;
 
-    @Column(name = "FATHER_NAME")
-    private String fatherName;
+    @Column(name = "MIDDLE_NAME")
+    private String middleName;
+
+    @Column(name = "LAST_NAME")
+    private String lastName;
 
     @Column(name = "GENDER")
     private String gender;
-
-    @Column(name = "BIRTH_DATE")
-    private String dob;
 
     @Column(name = "BLOOD_GROUP")
     private String bloodGroup;
@@ -38,14 +38,16 @@ public class BloodDonor implements Serializable {
     @Column(name = "BODY_WEIGHT")
     private String bodyWeight;
 
+    @Column(name = "BIRTH_DATE")
+    private String dob;
+
     @Column(name = "EMAIL")
     private String emailId;
 
     @Column(name = "MOBILE")
     private String phoneNumber;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ADDRESS_ID", referencedColumnName = "id")
+    @Embedded
     private Address address;
 
     @Column(name = "PROFILE_IMAGE")

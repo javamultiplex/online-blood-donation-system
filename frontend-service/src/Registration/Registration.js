@@ -1,7 +1,6 @@
 import React from 'react';
 import classes from './Registration.module.css';
 import TopNavigation from '../Navigation/TopNavigation/TopNavigation';
-import axios from 'axios';
 import {
     Form,
     FormGroup,
@@ -12,74 +11,123 @@ import {
     Container,
 } from 'reactstrap';
 import Footer from '../Footer/Footer';
+import { connect } from 'react-redux';
+import { listData } from '../util/commonUtil';
+import { getAllCountries } from '../redux/actions/country/getAndDeleteCountry';
+import { getAllStates } from '../redux/actions/state/getAndDeleteState';
+import { getAllCities } from '../redux/actions/city/getAndDeleteCity';
+import { getAllAreas } from '../redux/actions/area/getAndDeleteArea';
+import { bloodDonorRegister } from '../redux/actions/donor/registerDonor';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 class Registration extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            name: '',
-            fatherName: '',
-            gender: '',
-            dob: '',
-            bloodGroup: '',
-            bodyWeight: '',
-            emailId: '',
-            state: '',
-            city: '',
-            area: '',
-            pincode: '',
-            address: '',
-            phoneNumber: '',
-            photo:'',
-            success: false,
-            processed: false
+            payload: {
+                firstName: '',
+                middleName: '',
+                lastName: '',
+                gender: '',
+                bloodGroup: '',
+                bodyWeight: '',
+                dob: '',
+                emailId: '',
+                phoneNumber: '',
+                countryId: '',
+                stateId: '',
+                cityId: '',
+                areaId: '',
+                address: '',
+                pincode: ''
+            },
+            image: ''
         }
-
-        this.baseState = this.state
     }
 
     handleSubmit = (event) => {
         event.preventDefault();
         console.log(this.state);
-        axios.post('http://localhost:9090/api/v1/register', this.state)
-            .then(response => {
-                console.log(response);
-                this.setState(this.baseState);
-                this.setState({
-                    processed: true,
-                    success: true
-                })
-            }).catch(error => {
-                console.log(error);
-            })
+        this.props.register(this.state.image, this.state.payload)
     }
     componentDidMount() {
         window.scrollTo(0, 0);
+        this.props.getAllCountries();
+    }
+
+    countryChangeHandler = (e) => {
+        let countryId = e.target.value;
+        this.props.getAllStates(countryId);
+        this.setState({
+            ...this.state,
+            payload: {
+                ...this.state.payload,
+                countryId: countryId
+            }
+        })
+    }
+
+    stateChangeHandler = (e) => {
+        let stateId = e.target.value;
+        this.props.getAllCities(this.state.payload.countryId, stateId);
+        this.setState({
+            ...this.state,
+            payload: {
+                ...this.state.payload,
+                stateId: stateId
+            }
+        })
+    }
+
+    cityChangeHandler = (e) => {
+        let cityId = e.target.value;
+        this.props.getAllAreas(this.state.payload.countryId, this.state.payload.stateId, cityId);
+        this.setState({
+            ...this.state,
+            payload: {
+                ...this.state.payload,
+                cityId: cityId
+            }
+        })
+    }
+
+    fileChangeHandler = (e) => {
+        this.setState({
+            payload: {
+                ...this.state.payload
+            },
+            image: e.target.files[0]
+        })
     }
 
     changeHandler = (e) => {
         this.setState({
-            [e.target.name]: e.target.value
+            ...this.state,
+            payload: {
+                ...this.state.payload,
+                [e.target.name]: e.target.value
+            }
         });
     }
 
     render() {
         const {
-            name,
-            fatherName,
+            firstName,
+            middleName,
+            lastName,
             gender,
-            dob,
             bloodGroup,
             bodyWeight,
+            dob,
             emailId,
-            state,
-            city,
-            area,
-            pincode,
+            phoneNumber,
+            countryId,
+            stateId,
+            cityId,
+            areaId,
             address,
-            phoneNumber
-            } = this.state;
+            pincode
+        } = this.state.payload;
         const successMessage = <h1 style={{ textAlign: 'center' }}>Blood donor has been registered successfully !!</h1>;
         const errorMessage = <h1 style={{ textAlign: 'center' }}>Registeration failed.</h1>
         return (
@@ -90,21 +138,6 @@ class Registration extends React.Component {
                             <TopNavigation />
                         </Col>
                     </Row>
-                    {/* <Row>
-                        <Col>
-                            <h2 className={classes.pageHeading}>
-                                <FontAwesomeIcon icon="user-plus" /> New Donor Registration
-                                </h2>
-                            <hr />
-                        </Col>
-                    </Row> */}
-                    {/* <Row>
-                        <Col>
-                            <div className={classes.breadCrumb}>
-                                <BreadcrumbC />
-                            </div>
-                        </Col>
-                    </Row> */}
                     <Row>
                         <div style={{ 'marginTop': '70px' }}>
                             <Col>
@@ -126,28 +159,38 @@ class Registration extends React.Component {
                             <div>
                                 <Form className={classes.form} onSubmit={this.handleSubmit}>
                                     <Row form>
-                                        <Col md={6}>
+                                        <Col md={4}>
                                             <FormGroup>
-                                                <Label for="name" className={classes.Label}>Name</Label>
+                                                <Label for="firstName" className={classes.Label}>First Name</Label>
                                                 <Input type="text"
-                                                    id="name"
-                                                    name="name"
-                                                    placeholder="Enter your name"
+                                                    id="firstName"
+                                                    name="firstName"
+                                                    placeholder="Enter your first name"
                                                     required
                                                     onChange={this.changeHandler}
-                                                    value={name} />
+                                                    value={firstName} />
                                             </FormGroup>
                                         </Col>
-                                        <Col md={6}>
+                                        <Col md={4}>
                                             <FormGroup>
-                                                <Label for="fatherName" className={classes.Label}>Father Name</Label>
+                                                <Label for="middleName" className={classes.middle}>Middle Name</Label>
                                                 <Input type="text"
-                                                    id="fatherName"
-                                                    name="fatherName"
-                                                    placeholder="Enter your father's name"
-                                                    required
+                                                    id="middleName"
+                                                    name="middleName"
+                                                    placeholder="Enter your middle name"
                                                     onChange={this.changeHandler}
-                                                    value={fatherName} />
+                                                    value={middleName} />
+                                            </FormGroup>
+                                        </Col>
+                                        <Col md={4}>
+                                            <FormGroup>
+                                                <Label for="lastName" className={classes.last}>Last Name</Label>
+                                                <Input type="text"
+                                                    id="lastName"
+                                                    name="lastName"
+                                                    placeholder="Enter your last name"
+                                                    onChange={this.changeHandler}
+                                                    value={lastName} />
                                             </FormGroup>
                                         </Col>
                                     </Row>
@@ -233,47 +276,40 @@ class Registration extends React.Component {
                                     </Row>
 
                                     <Row form>
-
+                                        <Col md={3}>
+                                            <FormGroup>
+                                                <Label for="country" className={classes.Label}>Country</Label>
+                                                <Input type="select" id="country" name="countryId" required onChange={this.countryChangeHandler} value={countryId}>
+                                                    <option value="">Select Country</option>
+                                                    {listData(this.props.countries)}
+                                                </Input>
+                                            </FormGroup>
+                                        </Col>
                                         <Col md={3}>
                                             <FormGroup>
                                                 <Label for="state" className={classes.Label}>State</Label>
-                                                <Input type="select" id="state" name="state" required onChange={this.changeHandler} value={state}>
+                                                <Input type="select" id="state" name="stateId" required onChange={this.stateChangeHandler} value={stateId}>
                                                     <option value="">Select State</option>
-                                                    <option value="Uttarakhand">Uttarakhand</option>
+                                                    {listData(this.props.states)}
                                                 </Input>
                                             </FormGroup>
                                         </Col>
                                         <Col md={3}>
                                             <FormGroup>
                                                 <Label for="city" className={classes.Label}>City</Label>
-                                                <Input type="select" id="city" name="city" required onChange={this.changeHandler} value={city}>
+                                                <Input type="select" id="city" name="cityId" required onChange={this.cityChangeHandler} value={cityId}>
                                                     <option value="">Select City</option>
-                                                    <option value="Rudrapur">Rudrapur</option>
-                                                    <option value="Haldwani">Haldwani</option>
-                                                    <option value="Dehradun">Dehradun</option>
+                                                    {listData(this.props.cities)}
                                                 </Input>
                                             </FormGroup>
                                         </Col>
                                         <Col md={3}>
                                             <FormGroup>
                                                 <Label for="area" className={classes.Label}>Area</Label>
-                                                <Input type="select" id="area" name="area" required onChange={this.changeHandler} value={area}>
+                                                <Input type="select" id="area" name="areaId" required onChange={this.changeHandler} value={areaId}>
                                                     <option value="">Select Area</option>
-                                                    <option value="Adarash Colony">Adarash Colony</option>
-                                                    <option value="Singh Colony">Singh Colony</option>
+                                                    {listData(this.props.areas)}
                                                 </Input>
-                                            </FormGroup>
-                                        </Col>
-                                        <Col md={3}>
-                                            <FormGroup>
-                                                <Label for="pincode" className={classes.Label}>Pincode</Label>
-                                                <Input type="text"
-                                                    id="pincode"
-                                                    name="pincode"
-                                                    placeholder="Enter your pincode"
-                                                    required
-                                                    onChange={this.changeHandler}
-                                                    value={pincode} />
                                             </FormGroup>
                                         </Col>
                                     </Row>
@@ -291,12 +327,25 @@ class Registration extends React.Component {
                                                     value={address} />
                                             </FormGroup>
                                         </Col>
-                                        <Col md={6}>
+                                        <Col md={3}>
                                             <FormGroup>
-                                                <Label for="photo" className={classes.photo}>Upload Photo</Label>
+                                                <Label for="pincode" className={classes.Label}>Pincode</Label>
+                                                <Input type="text"
+                                                    id="pincode"
+                                                    name="pincode"
+                                                    placeholder="Enter your pincode"
+                                                    required
+                                                    onChange={this.changeHandler}
+                                                    value={pincode} />
+                                            </FormGroup>
+                                        </Col>
+                                        <Col md={3}>
+                                            <FormGroup>
+                                                <Label for="photo" className={classes.Label}>Upload Photo</Label>
                                                 <Input type="file"
                                                     id="photo"
-                                                    name="photo"
+                                                    name="image"
+                                                    onChange={this.fileChangeHandler}
                                                 />
                                             </FormGroup>
                                         </Col>
@@ -324,4 +373,23 @@ class Registration extends React.Component {
 
 }
 
-export default Registration;
+const mapStateToProps = state => {
+    return {
+        countries: state.getAndDeleteCountry.countries,
+        states: state.getAndDeleteState.states,
+        cities: state.getAndDeleteCity.cities,
+        areas: state.getAndDeleteArea.areas
+    }
+}
+
+const mapDispatchToProps = disptach => {
+    return {
+        getAllCountries: () => disptach(getAllCountries()),
+        getAllStates: (countryId) => disptach(getAllStates(countryId)),
+        getAllCities: (countryId, stateId) => disptach(getAllCities(countryId, stateId)),
+        getAllAreas: (countryId, stateId, cityId) => disptach(getAllAreas(countryId, stateId, cityId)),
+        register: (image, request) => disptach(bloodDonorRegister(image, request))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Registration);

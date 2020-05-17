@@ -102,15 +102,4 @@ public class CountryService {
         return countryRepository.save(country);
     }
 
-    /**
-     * @param countryId
-     * @param updatedCountry
-     * @return
-     */
-    public Country update(Long countryId, Country updatedCountry) {
-        Country country = get(countryId);
-        country.setName(StringUtils.capitalize(updatedCountry.getName().toLowerCase()));
-        return countryRepository.save(country);
-    }
-
 }
