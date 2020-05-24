@@ -3,6 +3,7 @@ package com.javamultiplex.mapper;
 import com.javamultiplex.client.AddressApiClient;
 import com.javamultiplex.entity.Address;
 import com.javamultiplex.entity.BloodDonor;
+import com.javamultiplex.enums.Status;
 import com.javamultiplex.model.BloodDonorDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -34,6 +35,7 @@ public class BloodDonorObjectMapper {
         bloodDonor.setDob(bloodDonorDTO.getDob());
         bloodDonor.setEmailId(bloodDonorDTO.getEmailId());
         bloodDonor.setPhoneNumber(bloodDonorDTO.getPhoneNumber());
+        bloodDonor.setStatus(Status.ACTIVE);
         return bloodDonor;
     }
 

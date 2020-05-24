@@ -54,11 +54,6 @@ class AdminLeftNavigation extends React.Component {
                     <p><FontAwesomeIcon icon="envelope" /> Inbox</p>
                 </div>
                 <div className={classes.tab} onClick={() => {
-                    this.props.history.push("/admin/search-donors")
-                }}>
-                    <p><FontAwesomeIcon icon="search" /> Search Donors</p>
-                </div>
-                <div className={classes.tab} onClick={() => {
                     this.props.history.push("/admin/active-donors")
                 }}>
                     <p><FontAwesomeIcon icon="users" /> Active Donors</p>

@@ -35,7 +35,6 @@ class TopNavigation extends React.Component {
                             <NavigationLink iconName="home" linkTitle="Home" url="/"/>
                             <NavigationLink iconName="users" linkTitle="About" url="/about-us"/>
                             <NavigationLink iconName="envelope" linkTitle="Contact us" url="/contact-us"/>
-                            <NavigationLink iconName="user" linkTitle="Admin" url="/admin"/>
                         </Nav>
                     </Collapse>
                 </Navbar>

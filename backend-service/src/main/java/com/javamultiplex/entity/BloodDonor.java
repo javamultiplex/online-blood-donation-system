@@ -1,5 +1,6 @@
 package com.javamultiplex.entity;
 
+import com.javamultiplex.enums.Status;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -49,6 +50,10 @@ public class BloodDonor implements Serializable {
 
     @Embedded
     private Address address;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="STATUS")
+    private Status status;
 
     @Column(name = "PROFILE_IMAGE")
     private byte[] image;

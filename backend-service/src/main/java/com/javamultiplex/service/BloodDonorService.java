@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.javamultiplex.dto.ErrorResponseDTO;
 import com.javamultiplex.entity.BloodDonor;
+import com.javamultiplex.enums.Status;
 import com.javamultiplex.error.ServiceException;
 import com.javamultiplex.mapper.BloodDonorObjectMapper;
 import com.javamultiplex.model.BloodDonorDTO;
@@ -85,6 +86,6 @@ public class BloodDonorService {
                     .userMessage("Exception comes while decoding request parameter (blood group)")
                     .build());
         }
-        return bloodDonorRepository.findByAddressZipAndBloodGroup(zip,bloodGroup);
+        return bloodDonorRepository.findByAddressZipAndBloodGroupAndStatus(zip,bloodGroup, Status.ACTIVE);
     }
 }

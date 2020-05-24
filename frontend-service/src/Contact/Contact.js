@@ -2,11 +2,7 @@ import React from 'react';
 import {
     Container,
     Row,
-    Col,
-    Form,
-    Input,
-    Label,
-    FormGroup
+    Col
 } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TopNavigation, { } from '../Navigation/TopNavigation/TopNavigation';
