@@ -33,7 +33,6 @@ class AdminTopNavigation extends React.Component {
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto" navbar>
                             <NavigationLink iconName="tachometer-alt" linkTitle="Dashboard" url="/admin"/>
-                            <NavigationLink iconName="sign-out-alt" linkTitle="Logout" url="#"/>
                         </Nav>
                     </Collapse>
                 </Navbar>

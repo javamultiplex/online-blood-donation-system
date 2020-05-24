@@ -26,51 +26,6 @@ const Contact = (props) => {
                 </Row>
                 <Row>
                     <Col>
-                        <div>
-                            <h3 className={classes.LeftColumn}>Send us a Message</h3>
-                            <Form>
-                                <FormGroup>
-                                    <Label for="fullName" className={classes.Label}>Full Name</Label>
-                                    <Input type="text"
-                                        id="fullName"
-                                        name="fullName"
-                                        placeholder="Enter your full name"
-                                        required />
-                                </FormGroup>
-                                <FormGroup>
-                                    <Label for="phoneNumber" className={classes.Label}>Phone Number</Label>
-                                    <Input type="text"
-                                        id="phoneNumber"
-                                        name="phoneNumber"
-                                        placeholder="Enter your phone number"
-                                        required />
-                                </FormGroup>
-                                <FormGroup>
-                                    <Label for="email" className={classes.Label}>Email Address</Label>
-                                    <Input type="email"
-                                        id="email"
-                                        name="email"
-                                        placeholder="Enter your email address"
-                                        required />
-                                </FormGroup>
-                                <FormGroup>
-                                    <Label for="message" className={classes.Label}>Message</Label>
-                                    <Input type="textarea"
-                                        id="message"
-                                        name="message"
-                                        placeholder="Enter your message"
-                                        rows="4"
-                                        required />
-                                </FormGroup>
-                                <FormGroup>
-                                    <Input type="submit"
-                                        className="btn-danger"
-                                        value="Send Message" />
-                                </FormGroup>
-                            </Form>
-                        </div>
-                    </Col>
-                    <Col>
                         <div className={classes.RightColumn}>
                             <CardC imageUrl={contactImg}
                                 imageAlt="Contact us"
