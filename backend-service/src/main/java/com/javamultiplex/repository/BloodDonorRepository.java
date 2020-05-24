@@ -8,5 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 public interface BloodDonorRepository extends JpaRepository<BloodDonor, Long> {
-    List<BloodDonor> findByAddressZipAndBloodGroupAndStatus(String zip, String bloodGroup, Status status);
+    List<BloodDonor> findAllByAddressZipAndBloodGroupAndStatus(String zip, String bloodGroup, Status status);
+    List<BloodDonor> findAllByStatus(Status status);
 }

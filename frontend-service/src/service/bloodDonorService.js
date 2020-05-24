@@ -21,3 +21,11 @@ export const search = (pincode, bloodGroup) => {
         }
     })
 }
+
+export const findAll = (status) => {
+    return axios.get("http://localhost:8080/api/v1/donors", {
+        params: {
+            "status": status
+        }
+    })
+}

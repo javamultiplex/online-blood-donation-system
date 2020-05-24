@@ -1,6 +1,7 @@
 package com.javamultiplex.resource;
 
 import com.javamultiplex.entity.BloodDonor;
+import com.javamultiplex.enums.Status;
 import com.javamultiplex.service.BloodDonorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,5 +34,10 @@ public class BloodDonorResource {
     public List<BloodDonor> search(@RequestParam(name = "zip") String zip,
                                    @RequestParam(name = "bloodGroup") String bloodGroup) {
         return bloodDonorService.search(zip, bloodGroup);
+    }
+
+    @GetMapping(value = "/donors")
+    public List<BloodDonor> findAll(@RequestParam(name = "status") Status status) {
+        return bloodDonorService.findAll(status);
     }
 }

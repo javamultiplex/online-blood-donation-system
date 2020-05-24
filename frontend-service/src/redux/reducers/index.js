@@ -8,7 +8,8 @@ import addAreaReducer from './area/addAreaReducer';
 import getAndDeleteAreaReducer from './area/getAndDeleteAreaReducer';
 import registerDonorReducer from './donor/registerDonorReducer';
 import searchDonorReducer from './donor/searchDonorReducer';
-
+import getAndDeleteActiveDonorReducer from './donor/getAndDeleteActiveDonorReducer';
+import getAndDeleteInActiveDonorReducer from './donor/getAndDeleteInActiveDonorReducer';
 import { combineReducers } from 'redux';
 export const rootReducer = combineReducers({
     addcountry: addCountryReducer,
@@ -20,5 +21,7 @@ export const rootReducer = combineReducers({
     addArea: addAreaReducer,
     getAndDeleteArea: getAndDeleteAreaReducer,
     registerDonor: registerDonorReducer,
-    searchDonor: searchDonorReducer
+    searchDonor: searchDonorReducer,
+    activeDonor: getAndDeleteActiveDonorReducer,
+    inActiveDonor: getAndDeleteInActiveDonorReducer
 });

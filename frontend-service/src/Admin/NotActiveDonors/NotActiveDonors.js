@@ -12,7 +12,13 @@ import AdminTopNavigation from '../AdminTopNavigation/AdminTopNavigation';
 import DashboardPage from '../DashboardPage/DashboardPage';
 import AdminLeftNavigation from '../AdminLeftNavigation/AdminLeftNavigation';
 import Footer from '../../Footer/Footer';
+import { connect } from 'react-redux';
+import { bloodDonorInActiveFindAll } from '../../redux/actions/donor/getAndDeleteDonor';
 class NotActiveDonors extends React.Component {
+
+    componentDidMount(){
+        this.props.findAll();
+    }
 
     render() {
         return (
@@ -50,24 +56,26 @@ class NotActiveDonors extends React.Component {
                                         <th>View</th>
                                         <th>Delete</th>
                                     </tr>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Rohit</td>
-                                        <td>Male</td>
-                                        <td>A+</td>
-                                        <td>Uttakhand</td>
-                                        <td>Rudrapur</td>
-                                        <td>Adarash Colony</td>
-                                        <td>7411608536</td>
+                                    {
+                                        this.props.donors.map((donor, index)=>
+                                        <tr key={index+1}>
+                                        <th scope="row">{index+1}</th>
+                                        <td>{`${donor.firstName} ${donor.lastName}`}</td>
+                                        <td>{donor.gender}</td>
+                                        <td>{donor.bloodGroup}</td>
+                                        <td>{donor.address.state}</td>
+                                        <td>{donor.address.city}</td>
+                                        <td>{donor.address.area}</td>
+                                        <td>{donor.phoneNumber}</td>
                                         <td><Badge
                                             color="info"
-                                            onClick={() => this.props.history.push('/admin/donor-full-detail')}
-                                            className={classes.Badge}
-                                        >View</Badge></td>
-                                        <td><Badge 
-                                        color="danger"
-                                        className={classes.Badge}>Delete</Badge></td>
-                                    </tr>
+                                            onClick={() => this.props.history.push('/admin/donor-full-detail/'+donor.id)}
+                                            className={classes.Badge}>View</Badge></td>
+                                        <td><Badge
+                                            color="danger"
+                                            className={classes.Badge}>Delete</Badge></td>
+                                    </tr>)
+                                    }
                                 </tbody>
                             </Table>
                         </div>
@@ -83,4 +91,16 @@ class NotActiveDonors extends React.Component {
     }
 }
 
-export default NotActiveDonors;
+const mapStateToProps = (state) => {
+    return {
+        donors: state.inActiveDonor.bloodDonors
+    }
+}
+
+const mapDisptachToProps = (dispatch) => {
+    return {
+        findAll: () => dispatch(bloodDonorInActiveFindAll())
+    }
+}
+
+export default connect(mapStateToProps, mapDisptachToProps)(NotActiveDonors);

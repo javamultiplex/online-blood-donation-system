@@ -12,7 +12,14 @@ import Dashboard from '../Dashboard/Dashboard';
 import DashboardPage from '../DashboardPage/DashboardPage';
 import AdminLeftNavigation from '../AdminLeftNavigation/AdminLeftNavigation';
 import Footer from '../../Footer/Footer';
+import { connect } from 'react-redux';
+import { bloodDonorActiveFindAll } from '../../redux/actions/donor/getAndDeleteDonor';
 class ActiveDonors extends React.Component {
+
+    componentDidMount(){
+        this.props.findAll();
+    }
+
     render() {
         return (
             <Container fluid>
@@ -49,41 +56,26 @@ class ActiveDonors extends React.Component {
                                         <th>View</th>
                                         <th>Delete</th>
                                     </tr>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Rohit</td>
-                                        <td>Male</td>
-                                        <td>A+</td>
-                                        <td>Uttakhand</td>
-                                        <td>Rudrapur</td>
-                                        <td>Adarash Colony</td>
-                                        <td>7411608536</td>
+                                    {
+                                        this.props.donors.map((donor, index)=>
+                                        <tr key={index+1}>
+                                        <th scope="row">{index+1}</th>
+                                        <td>{`${donor.firstName} ${donor.lastName}`}</td>
+                                        <td>{donor.gender}</td>
+                                        <td>{donor.bloodGroup}</td>
+                                        <td>{donor.address.state}</td>
+                                        <td>{donor.address.city}</td>
+                                        <td>{donor.address.area}</td>
+                                        <td>{donor.phoneNumber}</td>
                                         <td><Badge
                                             color="info"
-                                            onClick={() => this.props.history.push('/admin/donor-full-detail')}
+                                            onClick={() => this.props.history.push('/admin/donor-full-detail/'+donor.id)}
                                             className={classes.Badge}>View</Badge></td>
                                         <td><Badge
                                             color="danger"
                                             className={classes.Badge}>Delete</Badge></td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">2</th>
-                                        <td>Shivani</td>
-                                        <td>Female</td>
-                                        <td>A</td>
-                                        <td>Uttakhand</td>
-                                        <td>Rudrapur</td>
-                                        <td>Adarash Colony</td>
-                                        <td>7411608536</td>
-                                        <td><Badge
-                                            color="info"
-                                            onClick={() => this.props.history.push('/admin/donor-full-detail')}
-                                            className={classes.Badge}
-                                        >View</Badge></td>
-                                        <td><Badge
-                                            color="danger"
-                                            className={classes.Badge}>Delete</Badge></td>
-                                    </tr>
+                                    </tr>)
+                                    }
                                 </tbody>
                             </Table>
                         </div>
@@ -100,4 +92,16 @@ class ActiveDonors extends React.Component {
     }
 }
 
-export default ActiveDonors;
+const mapStateToProps = (state) => {
+    return {
+        donors: state.activeDonor.bloodDonors
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        findAll: () => dispatch(bloodDonorActiveFindAll())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ActiveDonors);

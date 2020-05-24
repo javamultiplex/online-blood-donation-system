@@ -79,7 +79,7 @@ class App extends React.Component {
         <Route path="/admin/need-blood" exact strict component={AdminNeedBlood} />
         <Route path="/admin/active-donors" exact strict component={ActiveDonors} />
         <Route path="/admin/not-active-donors" exact strict component={NotActiveDonors} />
-        <Route path="/admin/donor-full-detail" exact strict component={DonorFullDetail} />
+        <Route path="/admin/donor-full-detail/:id" exact strict component={DonorFullDetail} />
         <Route path="/admin/search-donors" exact strict component={SearchDonors} />
         <Route path="/admin/update-status" exact strict component={UpdateStatus} />
         <Route path="/admin/message-detail" exact strict component={MessageDetail} />

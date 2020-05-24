@@ -78,7 +78,7 @@ public class BloodDonorService {
     public List<BloodDonor> search(String zip, String bloodGroup){
         try {
             bloodGroup = URLDecoder.decode(bloodGroup, StandardCharsets.UTF_8.name());
-        }catch (UnsupportedEncodingException e){
+        }catch (UnsupportedEncodingException e) {
             throw new ServiceException(ErrorResponseDTO
                     .builder()
                     .statusCode(500)
@@ -86,6 +86,15 @@ public class BloodDonorService {
                     .userMessage("Exception comes while decoding request parameter (blood group)")
                     .build());
         }
-        return bloodDonorRepository.findByAddressZipAndBloodGroupAndStatus(zip,bloodGroup, Status.ACTIVE);
+        return bloodDonorRepository.findAllByAddressZipAndBloodGroupAndStatus(zip,bloodGroup, Status.ACTIVE);
+    }
+
+    /**
+     *
+     * @param status
+     * @return
+     */
+    public List<BloodDonor> findAll(Status status){
+        return bloodDonorRepository.findAllByStatus(status);
     }
 }
