@@ -7,6 +7,7 @@ import getAndDeleteCityReducer from './city/getAndDeleteCityReducer';
 import addAreaReducer from './area/addAreaReducer';
 import getAndDeleteAreaReducer from './area/getAndDeleteAreaReducer';
 import registerDonorReducer from './donor/registerDonorReducer';
+import searchDonorReducer from './donor/searchDonorReducer';
 
 import { combineReducers } from 'redux';
 export const rootReducer = combineReducers({
@@ -18,5 +19,6 @@ export const rootReducer = combineReducers({
     getAndDeleteCity: getAndDeleteCityReducer,
     addArea: addAreaReducer,
     getAndDeleteArea: getAndDeleteAreaReducer,
-    registerDonor: registerDonorReducer
+    registerDonor: registerDonorReducer,
+    searchDonor: searchDonorReducer
 });

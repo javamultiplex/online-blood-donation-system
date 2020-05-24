@@ -14,6 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 /**
  * @author Rohit Agarwal on 26/04/20 10:02 pm
@@ -31,6 +35,12 @@ public class BloodDonorService {
         this.bloodDonorObjectMapper = bloodDonorObjectMapper;
     }
 
+    /**
+     *
+     * @param request
+     * @param profileImage
+     * @return
+     */
     public BloodDonor register(String request, MultipartFile profileImage) {
         System.out.println("Request is : " + request);
         BloodDonorDTO bloodDonorDTO = null;
@@ -56,5 +66,25 @@ public class BloodDonorService {
                     .build());
         }
         return bloodDonorRepository.save(bloodDonor);
+    }
+
+    /**
+     *
+     * @param zip
+     * @param bloodGroup
+     * @return
+     */
+    public List<BloodDonor> search(String zip, String bloodGroup){
+        try {
+            bloodGroup = URLDecoder.decode(bloodGroup, StandardCharsets.UTF_8.name());
+        }catch (UnsupportedEncodingException e){
+            throw new ServiceException(ErrorResponseDTO
+                    .builder()
+                    .statusCode(500)
+                    .developerMessage(ExceptionUtils.getRootCauseMessage(e))
+                    .userMessage("Exception comes while decoding request parameter (blood group)")
+                    .build());
+        }
+        return bloodDonorRepository.findByAddressZipAndBloodGroup(zip,bloodGroup);
     }
 }

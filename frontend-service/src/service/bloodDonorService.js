@@ -11,3 +11,13 @@ export const register = (image, request) => {
         }
     });
 }
+
+export const search = (pincode, bloodGroup) => {
+    const bg = encodeURIComponent(bloodGroup);
+    return axios.get("http://localhost:8080/api/v1/search", {
+        params: {
+            "zip": pincode,
+            "bloodGroup": bg
+        }
+    })
+}

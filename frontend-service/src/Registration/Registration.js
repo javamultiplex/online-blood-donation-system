@@ -8,7 +8,7 @@ import {
     Input,
     Row,
     Col,
-    Container,
+    Container
 } from 'reactstrap';
 import Footer from '../Footer/Footer';
 import { connect } from 'react-redux';
@@ -19,8 +19,8 @@ import { getAllCities } from '../redux/actions/city/getAndDeleteCity';
 import { getAllAreas } from '../redux/actions/area/getAndDeleteArea';
 import { bloodDonorRegister } from '../redux/actions/donor/registerDonor';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import BreadcrumbC from '../BreadcrumbC/BreadcrumbC';
 class Registration extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -41,14 +41,50 @@ class Registration extends React.Component {
                 address: '',
                 pincode: ''
             },
-            image: ''
+            image: '',
+            success:'',
+            error:''
         }
     }
 
     handleSubmit = (event) => {
         event.preventDefault();
         console.log(this.state);
-        this.props.register(this.state.image, this.state.payload)
+        this.props.register(this.state.image, this.state.payload);
+        setTimeout(() => {
+            this.setState({
+                ...this.state,
+                payload:{
+                    ...this.state.payload
+                },
+                success: this.props.success,
+                error: this.props.error
+            })
+        }, 1000);
+        this.reset();
+    }
+
+    reset = () => {
+        this.setState({
+            payload: {
+                firstName: '',
+                middleName: '',
+                lastName: '',
+                gender: '',
+                bloodGroup: '',
+                bodyWeight: '',
+                dob: '',
+                emailId: '',
+                phoneNumber: '',
+                countryId: '',
+                stateId: '',
+                cityId: '',
+                areaId: '',
+                address: '',
+                pincode: ''
+            },
+            image: null
+        })
     }
     componentDidMount() {
         window.scrollTo(0, 0);
@@ -93,6 +129,7 @@ class Registration extends React.Component {
 
     fileChangeHandler = (e) => {
         this.setState({
+            ...this.state,
             payload: {
                 ...this.state.payload
             },
@@ -128,8 +165,6 @@ class Registration extends React.Component {
             address,
             pincode
         } = this.state.payload;
-        const successMessage = <h1 style={{ textAlign: 'center' }}>Blood donor has been registered successfully !!</h1>;
-        const errorMessage = <h1 style={{ textAlign: 'center' }}>Registeration failed.</h1>
         return (
             <>
                 <Container>
@@ -139,10 +174,28 @@ class Registration extends React.Component {
                         </Col>
                     </Row>
                     <Row>
-                        <div style={{ 'marginTop': '70px' }}>
+                        <Col>
+                            <h2 className={classes.pageHeading}>
+                                <FontAwesomeIcon icon="user-plus" /> Join As Blood Donor
+                                </h2>
+                            <hr />
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <div className={classes.breadCrumb}>
+                                <BreadcrumbC />
+                            </div>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <div>
                             <Col>
                                 {
-                                    this.state.processed ? (this.state.success ? successMessage : errorMessage) : ' '
+                                    this.state.success ? alert(this.state.success) : ''
+                                }
+                                {
+                                    this.state.error ? alert(this.state.error) : ''
                                 }
                             </Col>
                         </div>
@@ -209,7 +262,7 @@ class Registration extends React.Component {
                                         <Col md={4}>
                                             <FormGroup>
                                                 <Label for="bloodGroup" className={classes.Label}>Blood Group</Label>
-                                                <Input type="select" name="bloodGroup" id="bloodGroup" required onChange={this.changeHandler} valu={bloodGroup}>
+                                                <Input type="select" name="bloodGroup" id="bloodGroup" required onChange={this.changeHandler} value={bloodGroup}>
                                                     <option value="">Select Blood Group</option>
                                                     <option value="A+">A+</option>
                                                     <option value="A-">A-</option>
@@ -224,7 +277,7 @@ class Registration extends React.Component {
                                         </Col>
                                         <Col md={4}>
                                             <FormGroup>
-                                                <Label for="bodyWeight" className={classes.Label}>Body Weight</Label>
+                                                <Label for="bodyWeight" className={classes.Label}>Body Weight(Kg)</Label>
                                                 <Input type="text"
                                                     id="bodyWeight"
                                                     name="bodyWeight"
@@ -378,7 +431,9 @@ const mapStateToProps = state => {
         countries: state.getAndDeleteCountry.countries,
         states: state.getAndDeleteState.states,
         cities: state.getAndDeleteCity.cities,
-        areas: state.getAndDeleteArea.areas
+        areas: state.getAndDeleteArea.areas,
+        success: state.registerDonor.success,
+        error: state.registerDonor.error
     }
 }
 
