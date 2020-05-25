@@ -4,7 +4,9 @@ import {
     registerDonor,
     searchDonor,
     findAllActiveDonors,
-    findAllInActiveDonors
+    findAllInActiveDonors,
+    deleteActiveDonor,
+    deleteInActiveDonor
 } from './donorSagas';
 
 export function* watchRegisterDonorRequest() {
@@ -19,6 +21,14 @@ export function* watchFindAllActiveDonorRequest() {
     yield takeLatest(types.BLOOD_DONOR_ACTIVE_FIND_ALL, findAllActiveDonors);
 }
 
+export function* watchDeleteActiveDonorRequest() {
+    yield takeLatest(types.BLOOD_DONOR_ACTIVE_DELETE, deleteActiveDonor);
+}
+
 export function* watchFindAllInActiveDonorRequest() {
     yield takeLatest(types.BLOOD_DONOR_INACTIVE_FIND_ALL, findAllInActiveDonors);
+}
+
+export function* watchDeleteInActiveDonorRequest() {
+    yield takeLatest(types.BLOOD_DONOR_INACTIVE_DELETE, deleteInActiveDonor);
 }

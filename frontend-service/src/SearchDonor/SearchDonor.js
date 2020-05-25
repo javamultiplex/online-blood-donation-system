@@ -163,7 +163,7 @@ class SearchDonor extends React.Component {
                                 this.state.bloodDonor.map((donor, index) =>
                                     <MediaC key={index} image={`data:image/jpeg;base64,${donor.image}`}
                                         imageAlt=""
-                                        heading={`${donor.firstName} ${donor.lastName}`}
+                                        heading={`${donor.firstName} ${donor.middleName} ${donor.lastName}`}
                                         mediaObjectClassName={classes.MediaObject}
                                         body={
                                             <Table bordered>

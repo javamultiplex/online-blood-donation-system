@@ -40,4 +40,15 @@ public class BloodDonorResource {
     public List<BloodDonor> findAll(@RequestParam(name = "status") Status status) {
         return bloodDonorService.findAll(status);
     }
+
+
+    @GetMapping(value = "/donor/{id}")
+    public BloodDonor find(@PathVariable(name = "id") Long id) {
+        return bloodDonorService.findById(id);
+    }
+
+    @DeleteMapping(value = "/donor/{id}")
+    public BloodDonor delete(@PathVariable(name = "id") Long id){
+        return bloodDonorService.delete(id);
+    }
 }

@@ -26,7 +26,9 @@ import {
     watchRegisterDonorRequest,
     watchSearchDonorRequest,
     watchFindAllActiveDonorRequest,
-    watchFindAllInActiveDonorRequest
+    watchFindAllInActiveDonorRequest,
+    watchDeleteActiveDonorRequest,
+    watchDeleteInActiveDonorRequest
 } from './donor/donorWatchers';
 
 import { fork, all } from 'redux-saga/effects';
@@ -49,7 +51,9 @@ export function* rootSaga() {
             fork(watchRegisterDonorRequest),
             fork(watchSearchDonorRequest),
             fork(watchFindAllActiveDonorRequest),
-            fork(watchFindAllInActiveDonorRequest)
+            fork(watchFindAllInActiveDonorRequest),
+            fork(watchDeleteActiveDonorRequest),
+            fork(watchDeleteInActiveDonorRequest)
         ]
     )
 } 

@@ -2,7 +2,8 @@ import { call, put } from 'redux-saga/effects';
 import {
     register,
     search,
-    findAll
+    findAll,
+    deleteDonor
 } from '../../../service/bloodDonorService';
 import {
     bloodDonorRegisterSuccess,
@@ -15,7 +16,9 @@ import {
 
 import {
     bloodDonorInActiveFindAllSuccess,
-    bloodDonorActiveFindAllSuccess
+    bloodDonorActiveFindAllSuccess,
+    bloodDonorActiveDeleteSuccess,
+    bloodDonorInActiveDeleteSuccess
 } from '../../actions/donor/getAndDeleteDonor';
 
 export function* registerDonor(request) {
@@ -62,6 +65,20 @@ export function* findAllActiveDonors() {
     }
 }
 
+export function* deleteActiveDonor(request) {
+    try {
+        const { data } = yield call(deleteDonor, request.id);
+        yield put(bloodDonorActiveDeleteSuccess(data.id));
+    } catch (error) {
+        const errorResponse = error.response;
+        let message = error.message;
+        if (errorResponse) {
+            message = errorResponse.data.userMessages;
+        }
+        console.error("Error comes while deleting active blood donor : " + message);
+    }
+}
+
 
 export function* findAllInActiveDonors() {
     try {
@@ -74,5 +91,19 @@ export function* findAllInActiveDonors() {
             message = errorResponse.data.userMessages;
         }
         console.error("Error comes while getting inactive blood donors : " + message);
+    }
+}
+
+export function* deleteInActiveDonor(request) {
+    try {
+        const { data } = yield call(deleteDonor, request.id);
+        yield put(bloodDonorInActiveDeleteSuccess(data.id));
+    } catch (error) {
+        const errorResponse = error.response;
+        let message = error.message;
+        if (errorResponse) {
+            message = errorResponse.data.userMessages;
+        }
+        console.error("Error comes while deleting inactive blood donor : " + message);
     }
 }

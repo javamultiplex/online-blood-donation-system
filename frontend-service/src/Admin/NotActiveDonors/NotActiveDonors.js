@@ -13,7 +13,7 @@ import DashboardPage from '../DashboardPage/DashboardPage';
 import AdminLeftNavigation from '../AdminLeftNavigation/AdminLeftNavigation';
 import Footer from '../../Footer/Footer';
 import { connect } from 'react-redux';
-import { bloodDonorInActiveFindAll } from '../../redux/actions/donor/getAndDeleteDonor';
+import { bloodDonorInActiveFindAll, bloodDonorInActiveDelete } from '../../redux/actions/donor/getAndDeleteDonor';
 class NotActiveDonors extends React.Component {
 
     componentDidMount(){
@@ -60,7 +60,7 @@ class NotActiveDonors extends React.Component {
                                         this.props.donors.map((donor, index)=>
                                         <tr key={index+1}>
                                         <th scope="row">{index+1}</th>
-                                        <td>{`${donor.firstName} ${donor.lastName}`}</td>
+                                        <td>{`${donor.firstName} ${donor.middleName} ${donor.lastName}`}</td>
                                         <td>{donor.gender}</td>
                                         <td>{donor.bloodGroup}</td>
                                         <td>{donor.address.state}</td>
@@ -73,7 +73,9 @@ class NotActiveDonors extends React.Component {
                                             className={classes.Badge}>View</Badge></td>
                                         <td><Badge
                                             color="danger"
-                                            className={classes.Badge}>Delete</Badge></td>
+                                            className={classes.Badge}
+                                            onClick={()=>this.props.delete(donor.id)}
+                                            >Delete</Badge></td>
                                     </tr>)
                                     }
                                 </tbody>
@@ -99,7 +101,8 @@ const mapStateToProps = (state) => {
 
 const mapDisptachToProps = (dispatch) => {
     return {
-        findAll: () => dispatch(bloodDonorInActiveFindAll())
+        findAll: () => dispatch(bloodDonorInActiveFindAll()),
+        delete: (id)=> dispatch(bloodDonorInActiveDelete(id))
     }
 }
 

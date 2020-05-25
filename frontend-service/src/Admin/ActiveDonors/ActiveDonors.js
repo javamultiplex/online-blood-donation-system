@@ -13,10 +13,10 @@ import DashboardPage from '../DashboardPage/DashboardPage';
 import AdminLeftNavigation from '../AdminLeftNavigation/AdminLeftNavigation';
 import Footer from '../../Footer/Footer';
 import { connect } from 'react-redux';
-import { bloodDonorActiveFindAll } from '../../redux/actions/donor/getAndDeleteDonor';
+import { bloodDonorActiveFindAll, bloodDonorActiveDelete } from '../../redux/actions/donor/getAndDeleteDonor';
 class ActiveDonors extends React.Component {
 
-    componentDidMount(){
+    componentDidMount() {
         this.props.findAll();
     }
 
@@ -57,24 +57,24 @@ class ActiveDonors extends React.Component {
                                         <th>Delete</th>
                                     </tr>
                                     {
-                                        this.props.donors.map((donor, index)=>
-                                        <tr key={index+1}>
-                                        <th scope="row">{index+1}</th>
-                                        <td>{`${donor.firstName} ${donor.lastName}`}</td>
-                                        <td>{donor.gender}</td>
-                                        <td>{donor.bloodGroup}</td>
-                                        <td>{donor.address.state}</td>
-                                        <td>{donor.address.city}</td>
-                                        <td>{donor.address.area}</td>
-                                        <td>{donor.phoneNumber}</td>
-                                        <td><Badge
-                                            color="info"
-                                            onClick={() => this.props.history.push('/admin/donor-full-detail/'+donor.id)}
-                                            className={classes.Badge}>View</Badge></td>
-                                        <td><Badge
-                                            color="danger"
-                                            className={classes.Badge}>Delete</Badge></td>
-                                    </tr>)
+                                        this.props.donors.map((donor, index) =>
+                                            <tr key={index + 1}>
+                                                <th scope="row">{index + 1}</th>
+                                                <td>{`${donor.firstName} ${donor.middleName} ${donor.lastName}`}</td>
+                                                <td>{donor.gender}</td>
+                                                <td>{donor.bloodGroup}</td>
+                                                <td>{donor.address.state}</td>
+                                                <td>{donor.address.city}</td>
+                                                <td>{donor.address.area}</td>
+                                                <td>{donor.phoneNumber}</td>
+                                                <td><Badge
+                                                    color="info"
+                                                    onClick={() => this.props.history.push('/admin/donor-full-detail/' + donor.id)}
+                                                    className={classes.Badge}>View</Badge></td>
+                                                <td><Badge
+                                                    color="danger"
+                                                    className={classes.Badge} onClick={() => this.props.delete(donor.id)}>Delete</Badge></td>
+                                            </tr>)
                                     }
                                 </tbody>
                             </Table>
@@ -100,7 +100,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        findAll: () => dispatch(bloodDonorActiveFindAll())
+        findAll: () => dispatch(bloodDonorActiveFindAll()),
+        delete: (id) => dispatch(bloodDonorActiveDelete(id))
     }
 }
 

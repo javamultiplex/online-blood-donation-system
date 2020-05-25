@@ -11,6 +11,11 @@ const getAndDeleteActiveDonorReducer = (state = initialState, action) => {
                 ...state,
                 bloodDonors: action.payload
             }
+        case types.BLOOD_DONOR_ACTIVE_DELETE_SUCCESS:
+            return {
+                ...state,
+                bloodDonors: state.bloodDonors.filter(donor => donor.id !== action.payload)
+            }
         default:
             return state;
     }

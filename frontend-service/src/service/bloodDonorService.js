@@ -29,3 +29,7 @@ export const findAll = (status) => {
         }
     })
 }
+
+export const deleteDonor = (id) => {
+    return axios.delete(`http://localhost:8080/api/v1/donor/${id}`)
+}

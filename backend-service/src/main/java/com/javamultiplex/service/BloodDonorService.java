@@ -19,6 +19,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Rohit Agarwal on 26/04/20 10:02 pm
@@ -37,7 +38,6 @@ public class BloodDonorService {
     }
 
     /**
-     *
      * @param request
      * @param profileImage
      * @return
@@ -70,15 +70,14 @@ public class BloodDonorService {
     }
 
     /**
-     *
      * @param zip
      * @param bloodGroup
      * @return
      */
-    public List<BloodDonor> search(String zip, String bloodGroup){
+    public List<BloodDonor> search(String zip, String bloodGroup) {
         try {
             bloodGroup = URLDecoder.decode(bloodGroup, StandardCharsets.UTF_8.name());
-        }catch (UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e) {
             throw new ServiceException(ErrorResponseDTO
                     .builder()
                     .statusCode(500)
@@ -86,15 +85,38 @@ public class BloodDonorService {
                     .userMessage("Exception comes while decoding request parameter (blood group)")
                     .build());
         }
-        return bloodDonorRepository.findAllByAddressZipAndBloodGroupAndStatus(zip,bloodGroup, Status.ACTIVE);
+        return bloodDonorRepository.findAllByAddressZipAndBloodGroupAndStatus(zip, bloodGroup, Status.ACTIVE);
     }
 
     /**
-     *
      * @param status
      * @return
      */
-    public List<BloodDonor> findAll(Status status){
+    public List<BloodDonor> findAll(Status status) {
         return bloodDonorRepository.findAllByStatus(status);
+    }
+
+
+    public BloodDonor findById(Long id){
+        Optional<BloodDonor> bloodDonor = bloodDonorRepository.findById(id);
+        if (bloodDonor.isPresent()) {
+            return bloodDonor.get();
+        }
+        throw new ServiceException(ErrorResponseDTO
+                .builder()
+                .statusCode(404)
+                .userMessage("Donor not found with id "+id)
+                .developerMessage("Donor not found with id "+id)
+                .build());
+    }
+
+    /**
+     * @param id
+     * @return
+     */
+    public BloodDonor delete(Long id) {
+        BloodDonor bloodDonor = findById(id);
+        bloodDonorRepository.delete(bloodDonor);
+        return bloodDonor;
     }
 }
