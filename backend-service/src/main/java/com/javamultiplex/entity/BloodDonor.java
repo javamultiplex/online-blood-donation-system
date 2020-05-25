@@ -1,6 +1,6 @@
 package com.javamultiplex.entity;
 
-import com.javamultiplex.enums.Status;
+import com.javamultiplex.enums.DonorStatus;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -53,7 +53,7 @@ public class BloodDonor implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(name="STATUS")
-    private Status status;
+    private DonorStatus status;
 
     @Column(name = "PROFILE_IMAGE")
     private byte[] image;

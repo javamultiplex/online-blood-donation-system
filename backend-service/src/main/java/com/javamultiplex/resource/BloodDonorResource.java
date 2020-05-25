@@ -1,7 +1,8 @@
 package com.javamultiplex.resource;
 
 import com.javamultiplex.entity.BloodDonor;
-import com.javamultiplex.enums.Status;
+import com.javamultiplex.enums.DonorStatus;
+import com.javamultiplex.model.DonorStatusDTO;
 import com.javamultiplex.service.BloodDonorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,7 +38,7 @@ public class BloodDonorResource {
     }
 
     @GetMapping(value = "/donors")
-    public List<BloodDonor> findAll(@RequestParam(name = "status") Status status) {
+    public List<BloodDonor> findAll(@RequestParam(name = "status") DonorStatus status) {
         return bloodDonorService.findAll(status);
     }
 
@@ -48,7 +49,13 @@ public class BloodDonorResource {
     }
 
     @DeleteMapping(value = "/donor/{id}")
-    public BloodDonor delete(@PathVariable(name = "id") Long id){
+    public BloodDonor delete(@PathVariable(name = "id") Long id) {
         return bloodDonorService.delete(id);
+    }
+
+
+    @PatchMapping(value = "/donor/{id}")
+    public BloodDonor update(@PathVariable(name = "id") Long id, @RequestBody  DonorStatusDTO donorStatusDTO) {
+        return bloodDonorService.update(id, donorStatusDTO);
     }
 }

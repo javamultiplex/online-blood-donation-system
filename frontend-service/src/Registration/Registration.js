@@ -59,9 +59,11 @@ class Registration extends React.Component {
                 },
                 success: this.props.success,
                 error: this.props.error
+            
             })
+            this.reset();
         }, 1000);
-        this.reset();
+        
     }
 
     reset = () => {
@@ -83,7 +85,9 @@ class Registration extends React.Component {
                 address: '',
                 pincode: ''
             },
-            image: null
+            image: null,
+            success:'',
+            error:''
         })
     }
     componentDidMount() {

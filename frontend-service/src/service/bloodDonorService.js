@@ -33,3 +33,13 @@ export const findAll = (status) => {
 export const deleteDonor = (id) => {
     return axios.delete(`http://localhost:8080/api/v1/donor/${id}`)
 }
+
+export const getDonor = (id)=>{
+    return axios.get(`http://localhost:8080/api/v1/donor/${id}`)
+}
+
+export const updateDonor = (id,status)=>{
+    return axios.patch(`http://localhost:8080/api/v1/donor/${id}`, {
+        "status":status
+    })
+}

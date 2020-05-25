@@ -4,10 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.javamultiplex.dto.ErrorResponseDTO;
 import com.javamultiplex.entity.BloodDonor;
-import com.javamultiplex.enums.Status;
+import com.javamultiplex.enums.DonorStatus;
 import com.javamultiplex.error.ServiceException;
 import com.javamultiplex.mapper.BloodDonorObjectMapper;
 import com.javamultiplex.model.BloodDonorDTO;
+import com.javamultiplex.model.DonorStatusDTO;
 import com.javamultiplex.repository.BloodDonorRepository;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,19 +86,19 @@ public class BloodDonorService {
                     .userMessage("Exception comes while decoding request parameter (blood group)")
                     .build());
         }
-        return bloodDonorRepository.findAllByAddressZipAndBloodGroupAndStatus(zip, bloodGroup, Status.ACTIVE);
+        return bloodDonorRepository.findAllByAddressZipAndBloodGroupAndStatus(zip, bloodGroup, DonorStatus.ACTIVE);
     }
 
     /**
      * @param status
      * @return
      */
-    public List<BloodDonor> findAll(Status status) {
+    public List<BloodDonor> findAll(DonorStatus status) {
         return bloodDonorRepository.findAllByStatus(status);
     }
 
 
-    public BloodDonor findById(Long id){
+    public BloodDonor findById(Long id) {
         Optional<BloodDonor> bloodDonor = bloodDonorRepository.findById(id);
         if (bloodDonor.isPresent()) {
             return bloodDonor.get();
@@ -105,8 +106,8 @@ public class BloodDonorService {
         throw new ServiceException(ErrorResponseDTO
                 .builder()
                 .statusCode(404)
-                .userMessage("Donor not found with id "+id)
-                .developerMessage("Donor not found with id "+id)
+                .userMessage("Donor not found with id " + id)
+                .developerMessage("Donor not found with id " + id)
                 .build());
     }
 
@@ -118,5 +119,16 @@ public class BloodDonorService {
         BloodDonor bloodDonor = findById(id);
         bloodDonorRepository.delete(bloodDonor);
         return bloodDonor;
+    }
+
+    /**
+     * @param id
+     * @param status
+     * @return
+     */
+    public BloodDonor update(Long id, DonorStatusDTO status) {
+        BloodDonor bloodDonor = findById(id);
+        bloodDonor.setStatus(status.getStatus());
+        return bloodDonorRepository.save(bloodDonor);
     }
 }

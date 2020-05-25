@@ -3,7 +3,9 @@ import {
     register,
     search,
     findAll,
-    deleteDonor
+    deleteDonor,
+    getDonor,
+    updateDonor
 } from '../../../service/bloodDonorService';
 import {
     bloodDonorRegisterSuccess,
@@ -20,6 +22,12 @@ import {
     bloodDonorActiveDeleteSuccess,
     bloodDonorInActiveDeleteSuccess
 } from '../../actions/donor/getAndDeleteDonor';
+
+import {
+    bloodDonorDetailSuccess,
+    bloodDonorDetailTrigger,
+    bloodDonorUpdateStatusSuccess
+} from '../../actions/donor/getAndUpdateDonorDetail';
 
 export function* registerDonor(request) {
     try {
@@ -105,5 +113,35 @@ export function* deleteInActiveDonor(request) {
             message = errorResponse.data.userMessages;
         }
         console.error("Error comes while deleting inactive blood donor : " + message);
+    }
+}
+
+export function* getDonorDetails(request) {
+    yield put(bloodDonorDetailTrigger())
+    try {
+        const { data } = yield call(getDonor, request.id);
+        yield put(bloodDonorDetailSuccess(data));
+    } catch (error) {
+        const errorResponse = error.response;
+        let message = error.message;
+        if (errorResponse) {
+            message = errorResponse.data.userMessages;
+        }
+        console.error("Error comes while getting blood donor details : " + message);
+    }
+}
+
+
+export function* updateDonorStatus(request) {
+    try {
+        const { data } = yield call(updateDonor, request.id, request.status);
+        yield put(bloodDonorUpdateStatusSuccess(data));
+    } catch (error) {
+        const errorResponse = error.response;
+        let message = error.message;
+        if (errorResponse) {
+            message = errorResponse.data.userMessages;
+        }
+        console.error("Error comes while updating blood donor status : " + message);
     }
 }

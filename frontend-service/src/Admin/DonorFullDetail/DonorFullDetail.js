@@ -4,18 +4,98 @@ import {
     Button,
     Container,
     Row,
-    Col
+    Col,
+    Spinner
 } from 'reactstrap';
 import classes from './DonorFullDetail.module.css';
-import profilepic from '../../assets/rohit.jpg';
 import AdminTopNavigation from '../AdminTopNavigation/AdminTopNavigation';
 import AdminLeftNavigation from '../AdminLeftNavigation/AdminLeftNavigation';
 import Dashboard from '../Dashboard/Dashboard';
 import DashboardPage from '../DashboardPage/DashboardPage';
 import Footer from '../../Footer/Footer';
+import { connect } from 'react-redux';
+import { bloodDonorDetail, bloodDonorUpdateStatus } from '../../redux/actions/donor/getAndUpdateDonorDetail';
 
 class DonorFullDetail extends React.Component {
+
+    componentDidMount() {
+        const { id } = this.props.match.params
+        this.props.getDetail(id);
+    }
+
     render() {
+        const spinner = <Spinner style={{ width: '10rem', height: '10rem' }} type="grow" />
+        const output = <table>
+            <tbody>
+                <tr>
+                    <td className={classes.img}>
+                        <img src={`data:image/jpeg;base64,${this.props.bloodDonor.image ? this.props.bloodDonor.image : ''}`} width="300px" height="300px" alt="profilepic" />
+                    </td>
+                    <td className={classes.td}>
+                        <Table striped>
+                            <tbody>
+                                <tr>
+                                    <th>Name</th>
+                                    <td>{`${this.props.bloodDonor.firstName} ${this.props.bloodDonor.middleName} ${this.props.bloodDonor.lastName}`}</td>
+                                </tr>
+                                <tr>
+                                    <th>Gender</th>
+                                    <td>{this.props.bloodDonor.gender}</td>
+                                </tr>
+                                <tr>
+                                    <th>D.O.B</th>
+                                    <td>{this.props.bloodDonor.dob}</td>
+                                </tr>
+                                <tr>
+                                    <th>Blood Group</th>
+                                    <td>{this.props.bloodDonor.bloodGroup}</td>
+                                </tr>
+                                <tr>
+                                    <th>Body Weight</th>
+                                    <td>{this.props.bloodDonor.bodyWeight} Kg</td>
+                                </tr>
+                                <tr>
+                                    <th>Email</th>
+                                    <td>{this.props.bloodDonor.emailId}</td>
+                                </tr>
+                                <tr>
+                                    <th>Address</th>
+                                    <td>{this.props.bloodDonor.address ? this.props.bloodDonor.address.completeAddress : ''}</td>
+                                </tr>
+                                <tr>
+                                    <th>Area</th>
+                                    <td>{this.props.bloodDonor.address ? this.props.bloodDonor.address.area : ''}</td>
+                                </tr>
+                                <tr>
+                                    <th>City</th>
+                                    <td>{this.props.bloodDonor.address ? this.props.bloodDonor.address.city : ''}</td>
+                                </tr>
+                                <tr>
+                                    <th>Pincode</th>
+                                    <td>{this.props.bloodDonor.address ? this.props.bloodDonor.address.zip : ''}</td>
+                                </tr>
+                                <tr>
+                                    <th>State</th>
+                                    <td>{this.props.bloodDonor.address ? this.props.bloodDonor.address.state : ''}</td>
+                                </tr>
+                                <tr>
+                                    <th>Contact</th>
+                                    <td>{this.props.bloodDonor.phoneNumber}</td>
+                                </tr>
+                                <tr>
+                                    <th>Status</th>
+                                    <td><Button
+                                        color={this.props.bloodDonor.status === 'INACTIVE' ? 'success' : 'danger'}
+                                        onClick={() => this.props.updateStatus(this.props.bloodDonor.id, this.props.bloodDonor.status === 'INACTIVE' ? 'ACTIVE' : 'INACTIVE')}>{
+                                            this.props.bloodDonor.status === 'INACTIVE' ? 'ACTIVATE NOW' : 'DEACTIVATE NOW'
+                                        }</Button></td>
+                                </tr>
+                            </tbody>
+                        </Table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         return (
             <Container fluid>
                 <Row>
@@ -37,77 +117,7 @@ class DonorFullDetail extends React.Component {
                     </Col>
                     <Col xs="9">
                         <div className={classes.Table}>
-                            <table borderless>
-                                <tbody>
-                                    <tr>
-                                        <td className={classes.img}>
-                                            <img src={profilepic} width="300px" height="300px" alt="profilepic" />
-                                        </td>
-                                        <td className={classes.td}>
-                                            <Table striped>
-                                                <tbody>
-                                                    <tr>
-                                                        <th>Name</th>
-                                                        <td>Rohit Agarwal</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Father Name</th>
-                                                        <td>Gopal Agarwal</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Gender</th>
-                                                        <td>Male</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>D.O.B</th>
-                                                        <td>11-06-1992</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Blood Group</th>
-                                                        <td>A+</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Body Weight</th>
-                                                        <td>60 kg</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Email</th>
-                                                        <td>geurohit.21@gmail.com</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Address</th>
-                                                        <td>F-14, Adarash colony</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Area</th>
-                                                        <td>Adarash Colony</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>City</th>
-                                                        <td>Rudrapur</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Pincode</th>
-                                                        <td>263153</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>State</th>
-                                                        <td>Uttarakhand</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Contact</th>
-                                                        <td>7411608536</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Status</th>
-                                                        <td><Button color="danger">Activate Now</Button></td>
-                                                    </tr>
-                                                </tbody>
-                                            </Table>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            {this.props.loading ? spinner : output}
                         </div>
                     </Col>
                 </Row>
@@ -122,4 +132,19 @@ class DonorFullDetail extends React.Component {
     }
 }
 
-export default DonorFullDetail;
+
+const mapStateToProps = (state) => {
+    return {
+        bloodDonor: state.donorDetail.bloodDonor,
+        loading: state.donorDetail.loading
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getDetail: (id) => dispatch(bloodDonorDetail(id)),
+        updateStatus: (id, status) => dispatch(bloodDonorUpdateStatus(id, status))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DonorFullDetail);
