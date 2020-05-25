@@ -4,11 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.javamultiplex.dto.ErrorResponseDTO;
 import com.javamultiplex.entity.BloodDonor;
-import com.javamultiplex.enums.DonorStatus;
+import com.javamultiplex.enums.BloodDonorStatus;
 import com.javamultiplex.error.ServiceException;
 import com.javamultiplex.mapper.BloodDonorObjectMapper;
 import com.javamultiplex.model.BloodDonorDTO;
-import com.javamultiplex.model.DonorStatusDTO;
+import com.javamultiplex.model.BloodDonorStatusDTO;
 import com.javamultiplex.repository.BloodDonorRepository;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,14 +86,14 @@ public class BloodDonorService {
                     .userMessage("Exception comes while decoding request parameter (blood group)")
                     .build());
         }
-        return bloodDonorRepository.findAllByAddressZipAndBloodGroupAndStatus(zip, bloodGroup, DonorStatus.ACTIVE);
+        return bloodDonorRepository.findAllByAddressZipAndBloodGroupAndStatus(zip, bloodGroup, BloodDonorStatus.ACTIVE);
     }
 
     /**
      * @param status
      * @return
      */
-    public List<BloodDonor> findAll(DonorStatus status) {
+    public List<BloodDonor> findAll(BloodDonorStatus status) {
         return bloodDonorRepository.findAllByStatus(status);
     }
 
@@ -126,7 +126,7 @@ public class BloodDonorService {
      * @param status
      * @return
      */
-    public BloodDonor update(Long id, DonorStatusDTO status) {
+    public BloodDonor update(Long id, BloodDonorStatusDTO status) {
         BloodDonor bloodDonor = findById(id);
         bloodDonor.setStatus(status.getStatus());
         return bloodDonorRepository.save(bloodDonor);

@@ -1,6 +1,6 @@
 package com.javamultiplex.model;
 
-import com.javamultiplex.enums.DonorStatus;
+import com.javamultiplex.enums.BloodDonorStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-public class DonorStatusDTO implements Serializable {
+public class BloodDonorStatusDTO implements Serializable {
     private static final long serialVersionUID = 4025243218715349607L;
-    private DonorStatus status;
+    private BloodDonorStatus status;
 }
