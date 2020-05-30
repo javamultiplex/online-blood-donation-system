@@ -12,7 +12,8 @@ import getAndDeleteActiveDonorReducer from './donor/getAndDeleteActiveDonorReduc
 import getAndDeleteInActiveDonorReducer from './donor/getAndDeleteInActiveDonorReducer';
 import getAndUpdateDonorDetailReducer from './donor/getAndUpdateDonorDetailReducer';
 import registerRecipientReducer from './recipient/registerRecipientReducer';
-import getRecipientsReducer from './recipient/getRecipientsReducer';
+import getRecipientsReducer from './recipient/getAndDeleteRecipientReducer';
+import getRecipientDetailReducer from './recipient/getRecipientDetailReducer';
 import { combineReducers } from 'redux';
 export const rootReducer = combineReducers({
     addcountry: addCountryReducer,
@@ -29,5 +30,6 @@ export const rootReducer = combineReducers({
     inActiveDonor: getAndDeleteInActiveDonorReducer,
     donorDetail: getAndUpdateDonorDetailReducer,
     registerRecipient: registerRecipientReducer,
-    recipients: getRecipientsReducer
+    recipients: getRecipientsReducer,
+    recipientDetail: getRecipientDetailReducer
 });

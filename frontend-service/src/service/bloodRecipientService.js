@@ -15,3 +15,11 @@ export const register = (prescription, request) => {
 export const findAll = () => {
     return axios.get("http://localhost:8080/api/v1/recipients");
 }
+
+export const deleteRecipient = (id) => {
+    return axios.delete(`http://localhost:8080/api/v1/recipient/${id}`)
+}
+
+export const getRecipient = (id)=>{
+    return axios.get(`http://localhost:8080/api/v1/recipient/${id}`)
+}

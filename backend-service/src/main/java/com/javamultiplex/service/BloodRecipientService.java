@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Rohit Agarwal on 25/05/20 10:15 pm
@@ -64,8 +65,40 @@ public class BloodRecipientService {
         }
         return bloodRecipientRepository.save(bloodRecipient);
     }
-    
-    public List<BloodRecipient> findAll(){
+
+    public List<BloodRecipient> findAll() {
         return bloodRecipientRepository.findAll();
+    }
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    public BloodRecipient findById(Long id) {
+        Optional<BloodRecipient> bloodRecipient = bloodRecipientRepository.findById(id);
+        if (bloodRecipient.isPresent()) {
+            return bloodRecipient.get();
+        } else {
+            throw new ServiceException(
+                    ErrorResponseDTO
+                            .builder()
+                            .statusCode(404)
+                            .developerMessage("Recipient not found with id " + id)
+                            .userMessage("Recipient not found with id " + id)
+                            .build()
+            );
+        }
+    }
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    public BloodRecipient delete(Long id){
+        BloodRecipient bloodRecipient = findById(id);
+        bloodRecipientRepository.delete(bloodRecipient);
+        return bloodRecipient;
     }
 }

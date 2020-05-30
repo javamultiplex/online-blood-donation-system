@@ -10,8 +10,17 @@ import {
     Col
 } from 'reactstrap';
 import classes from './MessageDetail.module.css';
+import { connect } from 'react-redux';
+import { bloodRecipientDetail } from '../../redux/actions/recipient/getRecipientDetail';
 
 class MessageDetail extends React.Component {
+
+    componentDidMount() {
+        const { id } = this.props.match.params
+        console.log(id);
+        this.props.getDetail(id);
+    }
+
     render() {
         return (
             <Container fluid>
@@ -35,10 +44,10 @@ class MessageDetail extends React.Component {
                     <Col xs="9">
                         <div className={classes.Jumbotron}>
                             <i>
-                            <p>Hello Admin,</p>
-                            <p>Rohit needs 4 units of <b>A+ blood</b> urgently by <b>2019-11-10</b>. He is admit in <b>Paras Hospital, Gurgaon</b>. Please do the needful.</p>
-                            <p className={classes.Thanks}>Thanks,</p>
-                            <p>Support Team</p>
+                                <p>Hello Admin,</p>
+                                <p>{this.props.recipient.patientName} needs {this.props.recipient.bloodUnit} units of <b>{this.props.recipient.requiredBloodGroup} blood</b> urgently by <b>{this.props.recipient.date}</b>. He is admit in <b>{this.props.recipient.hospitalName}, {this.props.recipient.city}</b>. Please do the needful.</p>
+                                <p className={classes.Thanks}>Thanks,</p>
+                                <p>Support Team</p>
                             </i>
                         </div>
                     </Col>
@@ -53,4 +62,16 @@ class MessageDetail extends React.Component {
     }
 }
 
-export default MessageDetail;
+const mapStateToProps = (state) => {
+    return {
+        recipient: state.recipientDetail.bloodRecipient
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getDetail: (id) => dispatch(bloodRecipientDetail(id))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MessageDetail);

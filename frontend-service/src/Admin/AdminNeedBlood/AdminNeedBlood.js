@@ -12,7 +12,7 @@ import {
     Badge
 } from 'reactstrap';
 import { connect } from 'react-redux';
-import { bloodRecipientFindAll } from '../../redux/actions/recipient/getRecipients';
+import { bloodRecipientFindAll } from '../../redux/actions/recipient/getAndDeleteRecipient';
 import classes from './AdminNeedBlood.module.css';
 
 class AdminNeedBlood extends React.Component {

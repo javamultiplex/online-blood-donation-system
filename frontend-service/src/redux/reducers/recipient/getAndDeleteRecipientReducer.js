@@ -11,6 +11,11 @@ const getRecipientsReducer = (state = initialState, action) => {
                 ...state,
                 bloodRecipients: action.payload
             }
+        case types.BLOOD_RECIPIENT_DELETE_SUCCESS:
+            return {
+                ...state,
+                bloodRecipients: state.bloodRecipients.filter(recipient => recipient.id !== action.payload)
+            }
         default:
             return state;
     }

@@ -29,12 +29,23 @@ public class BloodRecipientResource {
 
     @PostMapping(value = "/recipient", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<BloodRecipient> register(@RequestParam(name = "file") MultipartFile prescription,
-                                                  @RequestParam(name = "request") String bloodRecipient) {
+                                                   @RequestParam(name = "request") String bloodRecipient) {
         return new ResponseEntity<>(bloodRecipientService.register(bloodRecipient, prescription), HttpStatus.CREATED);
     }
 
     @GetMapping("/recipients")
-    public List<BloodRecipient> findAll(){
+    public List<BloodRecipient> findAll() {
         return bloodRecipientService.findAll();
     }
+
+    @GetMapping("/recipient/{id}")
+    public BloodRecipient findById(@PathVariable(name = "id") Long id) {
+        return bloodRecipientService.findById(id);
+    }
+
+    @DeleteMapping("/recipient/{id}")
+    public BloodRecipient delete(@PathVariable(name = "id") Long id) {
+        return bloodRecipientService.delete(id);
+    }
+
 }

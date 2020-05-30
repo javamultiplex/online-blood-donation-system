@@ -19,3 +19,24 @@ export const bloodRecipientFindAllError = (error) => {
         payload: error
     }
 }
+
+export const bloodRecipientDelete = (id) => {
+    return {
+        type: types.BLOOD_RECIPIENT_DELETE,
+        id: id
+    }
+}
+
+export const bloodRecipientDeleteSuccess = (response) => {
+    return {
+        type: types.BLOOD_RECIPIENT_DELETE_SUCCESS,
+        payload: response
+    }
+}
+
+export const bloodRecipientDeleteError = (error) => {
+    return {
+        type: types.BLOOD_RECIPIENT_DELETE_ERROR,
+        payload: error
+    }
+}

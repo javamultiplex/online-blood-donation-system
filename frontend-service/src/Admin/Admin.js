@@ -13,7 +13,10 @@ import Dashboard from './Dashboard/Dashboard';
 import classes from './Admin.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from 'react-redux';
-import { bloodRecipientFindAll } from '../redux/actions/recipient/getRecipients';
+import {
+    bloodRecipientFindAll,
+    bloodRecipientDelete
+} from '../redux/actions/recipient/getAndDeleteRecipient';
 class Admin extends React.Component {
 
     componentDidMount() {
@@ -52,9 +55,9 @@ class Admin extends React.Component {
                                                     <Badge color="info"
                                                         className={classes.Badge}
                                                         onClick={() => {
-                                                            this.props.history.push('/admin/message-detail')
+                                                            this.props.history.push(`/admin/message-detail/${recipient.id}`)
                                                         }}><i>View</i></Badge>
-                                                    <Badge color="danger" className={classes.Badge}><i>Delete</i></Badge>
+                                                    <Badge color="danger" className={classes.Badge} onClick={()=>this.props.delete(recipient.id)}><i>Delete</i></Badge>
                                                 </p>
                                                 <p>
                                                     <FontAwesomeIcon icon="envelope" className={classes.FontAwesomeIcon} />
@@ -86,7 +89,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        findAll: () => dispatch(bloodRecipientFindAll())
+        findAll: () => dispatch(bloodRecipientFindAll()),
+        delete: (id) => dispatch(bloodRecipientDelete(id))
     }
 }
 

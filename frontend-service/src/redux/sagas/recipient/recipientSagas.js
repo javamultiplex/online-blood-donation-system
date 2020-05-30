@@ -1,7 +1,9 @@
 import { call, put } from 'redux-saga/effects';
 import {
     register,
-    findAll
+    findAll,
+    deleteRecipient,
+    getRecipient
 } from '../../../service/bloodRecipientService';
 import {
     bloodRecipientRegisterError,
@@ -9,8 +11,11 @@ import {
 } from '../../actions/recipient/registerRecipient';
 
 import {
-    bloodRecipientFindAllSuccess
-} from '../../actions/recipient/getRecipients';
+    bloodRecipientFindAllSuccess,
+    bloodRecipientDeleteSuccess
+} from '../../actions/recipient/getAndDeleteRecipient';
+
+import { bloodRecipientDetailSuccess } from '../../actions/recipient/getRecipientDetail';
 
 export function* registerRecipient(request) {
     try {
@@ -39,5 +44,36 @@ export function* findRecipients() {
             message = errorResponse.data.userMessages;
         }
         console.error("Error comes while getting blood recipients : " + message);
+    }
+}
+
+
+export function* deleteRecipientRequest(request) {
+    try {
+        const { data } = yield call(deleteRecipient, request.id);
+        yield put(bloodRecipientDeleteSuccess(data.id));
+    } catch (error) {
+        const errorResponse = error.response;
+        let message = error.message;
+        if (errorResponse) {
+            message = errorResponse.data.userMessages;
+        }
+        console.error("Error comes while deleting blood recipient : " + message);
+    }
+}
+
+
+
+export function* getRecipientDetail(request) {
+    try {
+        const { data } = yield call(getRecipient, request.id);
+        yield put(bloodRecipientDetailSuccess(data));
+    } catch (error) {
+        const errorResponse = error.response;
+        let message = error.message;
+        if (errorResponse) {
+            message = errorResponse.data.userMessages;
+        }
+        console.error("Error comes while getting blood recipient detail : " + message);
     }
 }

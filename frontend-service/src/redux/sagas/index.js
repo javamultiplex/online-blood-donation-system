@@ -35,7 +35,9 @@ import {
 
 import {
     watchRegisterRecipientRequest,
-    watchFindRecipientsRequest
+    watchFindRecipientsRequest,
+    watchDeleteRecipientRequest,
+    watchGetRecipientRequest
 } from './recipient/recipientWatchers';
 
 import { fork, all } from 'redux-saga/effects';
@@ -64,7 +66,9 @@ export function* rootSaga() {
             fork(watchGetDonorRequest),
             fork(watchUpdateDonorStatusRequest),
             fork(watchRegisterRecipientRequest),
-            fork(watchFindRecipientsRequest)
+            fork(watchFindRecipientsRequest),
+            fork(watchDeleteRecipientRequest),
+            fork(watchGetRecipientRequest)
         ]
     )
 } 
