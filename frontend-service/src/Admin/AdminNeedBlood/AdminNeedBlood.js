@@ -75,7 +75,7 @@ class AdminNeedBlood extends React.Component {
                                                 color="info"
                                                 className={classes.Badge}
                                                 onClick={() => {
-                                                    this.props.history.push("/admin/update-status")
+                                                    this.props.history.push(`/admin/update-status/${recipient.id}`)
                                                 }}>Update</Badge></td>
                                         </tr>)
                                     }

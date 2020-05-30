@@ -3,7 +3,8 @@ import {
     register,
     findAll,
     deleteRecipient,
-    getRecipient
+    getRecipient,
+    updateRecipient
 } from '../../../service/bloodRecipientService';
 import {
     bloodRecipientRegisterError,
@@ -16,6 +17,8 @@ import {
 } from '../../actions/recipient/getAndDeleteRecipient';
 
 import { bloodRecipientDetailSuccess } from '../../actions/recipient/getRecipientDetail';
+
+import { bloodRecipientUpdateStatusSuccess } from '../../actions/recipient/updateRecipientStatus';
 
 export function* registerRecipient(request) {
     try {
@@ -75,5 +78,20 @@ export function* getRecipientDetail(request) {
             message = errorResponse.data.userMessages;
         }
         console.error("Error comes while getting blood recipient detail : " + message);
+    }
+}
+
+
+export function* updateRecipientStatus(request) {
+    try {
+        const { data } = yield call(updateRecipient, request.id, request.status, request.comment);
+        yield put(bloodRecipientUpdateStatusSuccess(data));
+    } catch (error) {
+        const errorResponse = error.response;
+        let message = error.message;
+        if (errorResponse) {
+            message = errorResponse.data.userMessages;
+        }
+        console.error("Error comes while updating blood recipient status : " + message);
     }
 }

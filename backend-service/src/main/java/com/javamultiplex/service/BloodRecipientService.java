@@ -7,6 +7,7 @@ import com.javamultiplex.entity.BloodRecipient;
 import com.javamultiplex.error.ServiceException;
 import com.javamultiplex.mapper.BloodRecipientObjectMapper;
 import com.javamultiplex.model.BloodRecipientDTO;
+import com.javamultiplex.model.BloodRecipientStatusDTO;
 import com.javamultiplex.repository.BloodRecipientRepository;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +72,6 @@ public class BloodRecipientService {
     }
 
     /**
-     *
      * @param id
      * @return
      */
@@ -92,13 +92,23 @@ public class BloodRecipientService {
     }
 
     /**
-     *
      * @param id
      * @return
      */
-    public BloodRecipient delete(Long id){
+    public BloodRecipient delete(Long id) {
         BloodRecipient bloodRecipient = findById(id);
         bloodRecipientRepository.delete(bloodRecipient);
         return bloodRecipient;
+    }
+
+    /**
+     * @param id
+     * @return
+     */
+    public BloodRecipient update(Long id, BloodRecipientStatusDTO bloodRecipientStatusDTO) {
+        BloodRecipient bloodRecipient = findById(id);
+        bloodRecipient.setStatus(bloodRecipientStatusDTO.getStatus());
+        bloodRecipient.setComment(bloodRecipientStatusDTO.getComment());
+        return bloodRecipientRepository.save(bloodRecipient);
     }
 }

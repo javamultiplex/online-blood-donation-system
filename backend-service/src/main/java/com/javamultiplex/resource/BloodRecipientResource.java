@@ -1,6 +1,7 @@
 package com.javamultiplex.resource;
 
 import com.javamultiplex.entity.BloodRecipient;
+import com.javamultiplex.model.BloodRecipientStatusDTO;
 import com.javamultiplex.service.BloodRecipientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -48,4 +49,9 @@ public class BloodRecipientResource {
         return bloodRecipientService.delete(id);
     }
 
+    @PatchMapping("/recipient/{id}")
+    public BloodRecipient update(@PathVariable(name = "id") Long id,
+                                 @RequestBody BloodRecipientStatusDTO bloodRecipientStatusDTO) {
+        return bloodRecipientService.update(id, bloodRecipientStatusDTO);
+    }
 }

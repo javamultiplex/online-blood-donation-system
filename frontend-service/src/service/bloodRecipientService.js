@@ -20,6 +20,13 @@ export const deleteRecipient = (id) => {
     return axios.delete(`http://localhost:8080/api/v1/recipient/${id}`)
 }
 
-export const getRecipient = (id)=>{
+export const getRecipient = (id) => {
     return axios.get(`http://localhost:8080/api/v1/recipient/${id}`)
+}
+
+export const updateRecipient = (id, status, comment) => {
+    return axios.patch(`http://localhost:8080/api/v1/recipient/${id}`, {
+        "status": status,
+        "comment": comment
+    })
 }

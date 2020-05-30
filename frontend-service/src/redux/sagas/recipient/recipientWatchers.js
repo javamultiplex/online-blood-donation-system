@@ -4,7 +4,8 @@ import {
     registerRecipient,
     findRecipients,
     deleteRecipientRequest,
-    getRecipientDetail
+    getRecipientDetail,
+    updateRecipientStatus
 } from './recipientSagas';
 
 export function* watchRegisterRecipientRequest() {
@@ -23,4 +24,8 @@ export function* watchDeleteRecipientRequest() {
 
 export function* watchGetRecipientRequest() {
     yield takeLatest(types.BLOOD_RECIPIENT_DETAIL, getRecipientDetail);
+}
+
+export function* watchupdateRecipientStatusRequest() {
+    yield takeLatest(types.BLOOD_RECIPIENT_UPDATE_STATUS, updateRecipientStatus);
 }

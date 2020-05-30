@@ -14,8 +14,47 @@ import Footer from '../../Footer/Footer';
 import Dashboard from '../Dashboard/Dashboard';
 import DashboardPage from '../DashboardPage/DashboardPage';
 import classes from './UpdateStatus.module.css';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { withRouter } from 'react-router-dom';
+import { bloodRecipientUpdateStatus } from '../../redux/actions/recipient/updateRecipientStatus';
 class UpdateStatus extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            id: '',
+            status: '',
+            comment: ''
+        }
+    }
+
+    componentDidMount() {
+        const { id } = this.props.match.params;
+        this.setState({
+            ...this.state,
+            id: id
+        })
+    }
+
+    changeHandler = (event) => {
+        this.setState({
+            ...this.state,
+            [event.target.name]: event.target.value
+        })
+    }
+
+    submitHandler = (event) => {
+        event.preventDefault();
+        console.log(this.state);
+        this.props.updateStatus(this.state.id, this.state.status, this.state.comment)
+        setTimeout(() => {
+            this.props.history.push('/admin/need-blood')
+        }, 1000);
+    }
+
     render() {
+        const { status, comment } = this.state;
         return (
             <Container fluid>
                 <Row>
@@ -37,17 +76,17 @@ class UpdateStatus extends React.Component {
                     </Col>
                     <Col xs="9">
                         <div className={classes.Form}>
-                            <Form>
+                            <Form onSubmit={this.submitHandler}>
                                 <FormGroup>
                                     <Label for="status"
                                         className={classes.Label}>Status</Label>
                                     <Input type="select"
                                         name="status"
-                                        id="status" required>
+                                        id="status" required onChange={this.changeHandler} value={status}>
                                         <option value="">Please select status</option>
-                                        <option value="Rejected">Rejected</option>
-                                        <option value="Acknowledged">Acknowledged</option>
-                                        <option value="Completed">Completed</option>
+                                        <option value="REJECTED">Rejected</option>
+                                        <option value="ACKNOWLEDGED">Acknowledged</option>
+                                        <option value="COMPLETED">Completed</option>
                                     </Input>
                                 </FormGroup>
                                 <FormGroup>
@@ -58,7 +97,9 @@ class UpdateStatus extends React.Component {
                                         name="comment"
                                         row="4"
                                         placeholder="Please enter additional comments"
-                                        required/>
+                                        required
+                                        onChange={this.changeHandler}
+                                        value={comment} />
                                 </FormGroup>
                                 <FormGroup>
                                     <Input type="submit"
@@ -79,4 +120,11 @@ class UpdateStatus extends React.Component {
     }
 }
 
-export default UpdateStatus;
+const mapDisptachToProps = (dispatch) => {
+    return {
+        updateStatus: (id, status, comment) => dispatch(bloodRecipientUpdateStatus(id, status, comment))
+    }
+}
+
+export default compose(withRouter,
+    connect(null, mapDisptachToProps))(UpdateStatus);
