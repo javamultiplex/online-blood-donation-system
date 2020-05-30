@@ -13,14 +13,113 @@ import TopNavigation from '../Navigation/TopNavigation/TopNavigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Footer from '../Footer/Footer';
 import classes from './NeedBlood.module.css';
-
+import { connect } from 'react-redux';
+import { bloodRecipientRegister } from '../redux/actions/recipient/registerRecipient';
 class NeedBlood extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            payload: {
+                patientName: '',
+                gender: '',
+                requiredBloodGroup: '',
+                bloodUnit: '',
+                date: '',
+                hospitalName: '',
+                city: '',
+                pincode: '',
+                contactName: '',
+                emailId: '',
+                phoneNumber: '',
+                reason: ''
+            },
+            prescription: '',
+            success: '',
+            error: ''
+        }
+    }
 
     componentDidMount() {
         window.scrollTo(0, 0);
     }
 
+
+    handleSubmit = (event) => {
+        event.preventDefault();
+        console.log(this.state);
+        this.props.register(this.state.prescription, this.state.payload);
+        setTimeout(() => {
+            this.setState({
+                ...this.state,
+                payload: {
+                    ...this.state.payload
+                },
+                success: this.props.success,
+                error: this.props.error
+
+            })
+            this.reset();
+        }, 1000);
+    }
+
+    reset = () => {
+        this.setState({
+            payload: {
+                patientName: '',
+                gender: '',
+                requiredBloodGroup: '',
+                bloodUnit: '',
+                date: '',
+                hospitalName: '',
+                city: '',
+                pincode: '',
+                contactName: '',
+                emailId: '',
+                phoneNumber: '',
+                reason: ''
+            },
+            prescription: null,
+            success: '',
+            error: ''
+        })
+    }
+
+    fileChangeHandler = (e) => {
+        this.setState({
+            ...this.state,
+            payload: {
+                ...this.state.payload
+            },
+            prescription: e.target.files[0]
+        })
+    }
+
+    changeHandler = (e) => {
+        this.setState({
+            ...this.state,
+            payload: {
+                ...this.state.payload,
+                [e.target.name]: e.target.value
+            }
+        });
+    }
+
     render() {
+
+        const { patientName,
+            gender,
+            requiredBloodGroup,
+            bloodUnit,
+            date,
+            hospitalName,
+            city,
+            pincode,
+            contactName,
+            emailId,
+            phoneNumber,
+            reason } = this.state.payload;
+
         return (
             <Container>
                 <Row>
@@ -44,6 +143,18 @@ class NeedBlood extends React.Component {
                     </Col>
                 </Row>
                 <Row>
+                    <div>
+                        <Col>
+                            {
+                                this.state.success ? alert(this.state.success) : ''
+                            }
+                            {
+                                this.state.error ? alert(this.state.error) : ''
+                            }
+                        </Col>
+                    </div>
+                </Row>
+                <Row>
                     <Col>
                         <h3 className={classes.formHeading}>
                             <FontAwesomeIcon icon="bed" /> Need Blood to Save Lifes
@@ -52,7 +163,7 @@ class NeedBlood extends React.Component {
                 </Row>
                 <Row>
                     <Col>
-                        <Form className={classes.form}>
+                        <Form className={classes.form} onSubmit={this.handleSubmit}>
                             <Row form>
                                 <Col md={6}>
                                     <FormGroup>
@@ -61,13 +172,15 @@ class NeedBlood extends React.Component {
                                             id="patientName"
                                             name="patientName"
                                             placeholder="Enter patient full name"
-                                            required />
+                                            required
+                                            onChange={this.changeHandler}
+                                            value={patientName} />
                                     </FormGroup>
                                 </Col>
                                 <Col md={6}>
                                     <FormGroup>
                                         <Label for="gender" className={classes.Label}>Gender</Label>
-                                        <Input type="select" name="gender" id="gender" required>
+                                        <Input type="select" name="gender" id="gender" required onChange={this.changeHandler} value={gender}>
                                             <option value="">Select gender</option>
                                             <option value="M">Male</option>
                                             <option value="F">Female</option>
@@ -80,7 +193,7 @@ class NeedBlood extends React.Component {
                                 <Col md={4}>
                                     <FormGroup>
                                         <Label for="bloodGroup" className={classes.Label}>Required Blood Group</Label>
-                                        <Input type="select" name="bloodGroup" id="bloodGroup" required>
+                                        <Input type="select" name="requiredBloodGroup" id="bloodGroup" required onChange={this.changeHandler} value={requiredBloodGroup}>
                                             <option value="">Select Blood Group</option>
                                             <option value="A+">A+</option>
                                             <option value="A-">A-</option>
@@ -100,7 +213,9 @@ class NeedBlood extends React.Component {
                                             id="bloodUnit"
                                             name="bloodUnit"
                                             placeholder="Enter number of units"
-                                            required />
+                                            required
+                                            onChange={this.changeHandler}
+                                            value={bloodUnit} />
                                     </FormGroup>
                                 </Col>
                                 <Col md={4}>
@@ -108,8 +223,10 @@ class NeedBlood extends React.Component {
                                         <Label for="requiredDate" className={classes.Label}>When Required</Label>
                                         <Input type="date"
                                             id="requiredDate"
-                                            name="requiredDate"
-                                            required />
+                                            name="date"
+                                            required
+                                            onChange={this.changeHandler}
+                                            value={date} />
                                     </FormGroup>
                                 </Col>
                             </Row>
@@ -119,10 +236,12 @@ class NeedBlood extends React.Component {
                                         <Label for="hospitalAddress" className={classes.Label}>Hospital Name and Address</Label>
                                         <Input type="textarea"
                                             id="hospitalAddress"
-                                            name="hospitalAddress"
+                                            name="hospitalName"
                                             rows="2"
                                             placeholder="Enter hospital full address"
                                             required
+                                            onChange={this.changeHandler}
+                                            value={hospitalName}
                                         />
                                     </FormGroup>
                                 </Col>
@@ -133,7 +252,9 @@ class NeedBlood extends React.Component {
                                             id="city"
                                             name="city"
                                             placeholder="Enter city name"
-                                            required />
+                                            required
+                                            onChange={this.changeHandler}
+                                            value={city} />
                                     </FormGroup>
                                 </Col>
                                 <Col md={4}>
@@ -143,7 +264,9 @@ class NeedBlood extends React.Component {
                                             id="pincode"
                                             name="pincode"
                                             placeholder="Enter pincode"
-                                            required />
+                                            required
+                                            onChange={this.changeHandler}
+                                            value={pincode} />
                                     </FormGroup>
                                 </Col>
                             </Row>
@@ -155,7 +278,9 @@ class NeedBlood extends React.Component {
                                             id="contactName"
                                             name="contactName"
                                             placeholder="Enter contact name"
-                                            required />
+                                            required
+                                            onChange={this.changeHandler}
+                                            value={contactName} />
                                     </FormGroup>
                                 </Col>
                                 <Col md={4}>
@@ -163,9 +288,11 @@ class NeedBlood extends React.Component {
                                         <Label for="email" className={classes.Label}>Email ID</Label>
                                         <Input type="email"
                                             id="email"
-                                            name="email"
+                                            name="emailId"
                                             placeholder="Enter email id"
-                                            required />
+                                            required
+                                            onChange={this.changeHandler}
+                                            value={emailId} />
                                     </FormGroup>
                                 </Col>
                                 <Col md={4}>
@@ -173,9 +300,11 @@ class NeedBlood extends React.Component {
                                         <Label for="phone" className={classes.Label}>Phone Number</Label>
                                         <Input type="text"
                                             id="phone"
-                                            name="phone"
+                                            name="phoneNumber"
                                             placeholder="Enter phone number"
-                                            required />
+                                            required
+                                            onChange={this.changeHandler}
+                                            value={phoneNumber} />
                                     </FormGroup>
                                 </Col>
                             </Row>
@@ -185,18 +314,21 @@ class NeedBlood extends React.Component {
                                         <Label for="bloodReason" className={classes.Label}>Reason For Blood</Label>
                                         <Input type="textarea"
                                             id="bloodReason"
-                                            name="bloodReason"
+                                            name="reason"
                                             placeholder="Enter reason"
-                                            required />
+                                            required
+                                            onChange={this.changeHandler}
+                                            value={reason} />
                                     </FormGroup>
                                 </Col>
                                 <Col md={6}>
                                     <FormGroup>
-                                        <Label for="photo" className={classes.Label}>Upload Valid Prescription</Label>
+                                        <Label for="prescription" className={classes.Label}>Upload Valid Prescription</Label>
                                         <Input type="file"
-                                            id="photo"
-                                            name="photo"
-                                            required />
+                                            id="prescription"
+                                            name="prescription"
+                                            required
+                                            onChange={this.fileChangeHandler} />
                                     </FormGroup>
                                 </Col>
                             </Row>
@@ -219,4 +351,17 @@ class NeedBlood extends React.Component {
     }
 }
 
-export default NeedBlood;
+const mapStateToProps = (state) => {
+    return {
+        error: state.registerRecipient.error,
+        success: state.registerRecipient.success
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        register: (prescription, request) => dispatch(bloodRecipientRegister(prescription, request))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NeedBlood);

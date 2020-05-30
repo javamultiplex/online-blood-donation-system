@@ -11,10 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1")
 @CrossOrigin(origins = "*")
 public class BloodDonorResource {
 
@@ -25,23 +26,24 @@ public class BloodDonorResource {
         this.bloodDonorService = bloodDonorService;
     }
 
-    @PostMapping(value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<BloodDonor> register(@RequestParam(name = "file") MultipartFile request,
+    @PostMapping(value = "/donor", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<BloodDonor> register(@RequestParam(name = "file") MultipartFile image,
                                                @RequestParam(name = "request") String bloodDonor) {
-        return new ResponseEntity<>(bloodDonorService.register(bloodDonor, request), HttpStatus.CREATED);
-    }
-
-    @GetMapping(value = "/search")
-    public List<BloodDonor> search(@RequestParam(name = "zip") String zip,
-                                   @RequestParam(name = "bloodGroup") String bloodGroup) {
-        return bloodDonorService.search(zip, bloodGroup);
+        return new ResponseEntity<>(bloodDonorService.register(bloodDonor, image), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/donors")
-    public List<BloodDonor> findAll(@RequestParam(name = "status") BloodDonorStatus status) {
-        return bloodDonorService.findAll(status);
+    public List<BloodDonor> findAll(@RequestParam(name = "zip", required = false) String zip,
+                                    @RequestParam(name = "bloodGroup", required = false) String bloodGroup,
+                                    @RequestParam(name = "status", required = false) BloodDonorStatus status) {
+        List<BloodDonor> bloodDonors;
+        if (status != null) {
+            bloodDonors = bloodDonorService.findAll(status);
+        } else {
+            bloodDonors = bloodDonorService.search(zip, bloodGroup);
+        }
+        return bloodDonors;
     }
-
 
     @GetMapping(value = "/donor/{id}")
     public BloodDonor find(@PathVariable(name = "id") Long id) {
