@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * @author Rohit Agarwal on 30/05/20 1:51 pm
  * @copyright www.javamultiplex.com
@@ -29,5 +31,10 @@ public class BloodRecipientResource {
     public ResponseEntity<BloodRecipient> register(@RequestParam(name = "file") MultipartFile prescription,
                                                   @RequestParam(name = "request") String bloodRecipient) {
         return new ResponseEntity<>(bloodRecipientService.register(bloodRecipient, prescription), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/recipients")
+    public List<BloodRecipient> findAll(){
+        return bloodRecipientService.findAll();
     }
 }

@@ -11,10 +11,17 @@ import {
     Table,
     Badge
 } from 'reactstrap';
-import SearchBox from '../SearchBox/SearchBox';
+import { connect } from 'react-redux';
+import { bloodRecipientFindAll } from '../../redux/actions/recipient/getRecipients';
 import classes from './AdminNeedBlood.module.css';
 
 class AdminNeedBlood extends React.Component {
+
+
+    componentDidMount() {
+        this.props.findAll();
+    }
+
     render() {
         return (
             <Container fluid>
@@ -36,7 +43,6 @@ class AdminNeedBlood extends React.Component {
                         <AdminLeftNavigation />
                     </Col>
                     <Col xs="9">
-                        <SearchBox />
                         <div className={classes.Table}>
                             <Table striped>
                                 <tbody>
@@ -52,23 +58,27 @@ class AdminNeedBlood extends React.Component {
                                         <th>Status</th>
                                         <th>Update</th>
                                     </tr>
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Rohit</td>
-                                        <td>Male</td>
-                                        <td>A+</td>
-                                        <td>2</td>
-                                        <td>Ganga Ram Hospital</td>
-                                        <td>Accident</td>
-                                        <td>29-10-2019</td>
-                                        <td><Badge color="danger">Pending</Badge></td>
-                                        <td><Badge
-                                            color="info"
-                                            className={classes.Badge}
-                                            onClick={() => {
-                                                this.props.history.push("/admin/update-status")
-                                            }}>Update</Badge></td>
-                                    </tr>
+                                    {
+                                        this.props.recipients.map((recipient, index) => <tr key={index}>
+                                            <th scope="row">{index + 1}</th>
+                                            <td>{recipient.patientName}</td>
+                                            <td>{recipient.gender}</td>
+                                            <td>{recipient.requiredBloodGroup}</td>
+                                            <td>{recipient.bloodUnit}</td>
+                                            <td>{recipient.hospitalName}</td>
+                                            <td>{recipient.reason}</td>
+                                            <td>{recipient.date}</td>
+                                            <td><Badge color={
+                                                getColor(recipient.status)
+                                            }>{recipient.status}</Badge></td>
+                                            <td><Badge
+                                                color="info"
+                                                className={classes.Badge}
+                                                onClick={() => {
+                                                    this.props.history.push("/admin/update-status")
+                                                }}>Update</Badge></td>
+                                        </tr>)
+                                    }
                                 </tbody>
                             </Table>
                         </div>
@@ -84,4 +94,30 @@ class AdminNeedBlood extends React.Component {
     }
 }
 
-export default AdminNeedBlood;
+function getColor(status) {
+    let color = ''
+    if (status === 'PENDING') {
+        color = 'warning'
+    } else if (status === 'COMPLETED') {
+        color = 'success'
+    } else if (status === 'REJECTED') {
+        color = 'danger'
+    } else if (status === 'ACKNOWLEDGED') {
+        color = 'primary'
+    }
+    return color;
+}
+
+const mapStateToProps = (state) => {
+    return {
+        recipients: state.recipients.bloodRecipients
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        findAll: () => dispatch(bloodRecipientFindAll())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AdminNeedBlood);

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author Rohit Agarwal on 25/05/20 10:15 pm
@@ -62,5 +63,9 @@ public class BloodRecipientService {
                     .build());
         }
         return bloodRecipientRepository.save(bloodRecipient);
+    }
+    
+    public List<BloodRecipient> findAll(){
+        return bloodRecipientRepository.findAll();
     }
 }

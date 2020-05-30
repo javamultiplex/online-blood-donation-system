@@ -12,7 +12,14 @@ import DashboardPage from './DashboardPage/DashboardPage';
 import Dashboard from './Dashboard/Dashboard';
 import classes from './Admin.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { connect } from 'react-redux';
+import { bloodRecipientFindAll } from '../redux/actions/recipient/getRecipients';
 class Admin extends React.Component {
+
+    componentDidMount() {
+        this.props.findAll();
+    }
+
     render() {
         return (
             <>
@@ -36,55 +43,27 @@ class Admin extends React.Component {
                         </Col>
                         <Col xs="9">
                             <div className={classes.Admin}>
-                                <div className={classes.message}>
-                                    <p className={classes.right}>
-                                        <i>2019-03-11 04:56:56</i>
-                                        <Badge color="info"
-                                            className={classes.Badge}
-                                            onClick={() => {
-                                                this.props.history.push('/admin/message-detail')
-                                            }}><i>View</i></Badge>
-                                        <Badge color="danger" className={classes.Badge}><i>Delete</i></Badge>
-                                    </p>
-                                    <p>
-                                        <FontAwesomeIcon icon="envelope" className={classes.FontAwesomeIcon} />
-                                        <b>Rohit : </b> Need A+ Blood...
-                                    </p>
-                                </div>
-                                <br />
-                                <div className={classes.message}>
-
-                                    <p className={classes.right}>
-                                        <i>2019-03-11 04:56:56</i>
-                                        <Badge color="info"
-                                            className={classes.Badge}
-                                            onClick={() => {
-                                                this.props.history.push("/admin/message-detail")
-                                            }}><i>View</i></Badge>
-                                        <Badge color="danger" className={classes.Badge}><i>Delete</i></Badge>
-                                    </p>
-                                    <p>
-                                        <FontAwesomeIcon icon="envelope" className={classes.FontAwesomeIcon} />
-                                        <b>Rohit : </b> Need A+ Blood...
-                                    </p>
-                                </div>
-                                <br />
-                                <div className={classes.message}>
-
-                                    <p className={classes.right}>
-                                        <i>2019-03-11 04:56:56</i>
-                                        <Badge color="info"
-                                            className={classes.Badge}
-                                            onClick={() => {
-                                                this.props.history.push("/admin/message-detail")
-                                            }}><i>View</i></Badge>
-                                        <Badge color="danger" className={classes.Badge}><i>Delete</i></Badge>
-                                    </p>
-                                    <p>
-                                        <FontAwesomeIcon icon="envelope" className={classes.FontAwesomeIcon} />
-                                        <b>Rohit : </b> Need A+ Blood...
-                                    </p>
-                                </div>
+                                {
+                                    this.props.recipients.map((recipient, index) =>
+                                        <React.Fragment key={index}>
+                                            <div className={classes.message}>
+                                                <p className={classes.right}>
+                                                    <i>{new Date().toLocaleString()}</i>
+                                                    <Badge color="info"
+                                                        className={classes.Badge}
+                                                        onClick={() => {
+                                                            this.props.history.push('/admin/message-detail')
+                                                        }}><i>View</i></Badge>
+                                                    <Badge color="danger" className={classes.Badge}><i>Delete</i></Badge>
+                                                </p>
+                                                <p>
+                                                    <FontAwesomeIcon icon="envelope" className={classes.FontAwesomeIcon} />
+                                                    <b>{recipient.patientName} : </b> Need {recipient.requiredBloodGroup} Blood...
+                                               </p>
+                                            </div>
+                                            <br />
+                                        </React.Fragment>)
+                                }
                             </div>
                         </Col>
                     </Row>
@@ -99,4 +78,16 @@ class Admin extends React.Component {
     }
 }
 
-export default Admin;
+const mapStateToProps = (state) => {
+    return {
+        recipients: state.recipients.bloodRecipients
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        findAll: () => dispatch(bloodRecipientFindAll())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Admin);
