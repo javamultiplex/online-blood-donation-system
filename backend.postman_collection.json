@@ -1,0 +1,347 @@
+{
+	"info": {
+		"_postman_id": "377c6cd3-672c-42f7-9bf3-eb10e5c3c7c9",
+		"name": "Blood Donation Backend Microservice",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Donor",
+			"item": [
+				{
+					"name": "Register Blood Donor",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/rohit/Downloads/MAIL.jpg"
+								},
+								{
+									"key": "request",
+									"value": "{\n    \"address\": \"V/647, YEN PG SARASWATI VIHAR, SECTOR 28\",\n    \"areaId\": \"296\",\n    \"bloodGroup\": \"A+\",\n    \"bodyWeight\": \"70\",\n    \"cityId\": \"292\",\n    \"countryId\": \"287\",\n    \"dob\": \"1961-06-11\",\n    \"emailId\": \"geurohit.21@gmail.com\",\n    \"firstName\": \"Rohit\",\n    \"gender\": \"M\",\n    \"lastName\": \"Agarwal\",\n    \"middleName\": \"\",\n    \"phoneNumber\": \"07411608536\",\n    \"pincode\": \"122002\",\n    \"stateId\": \"290\"\n}",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/donor",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"donor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find by zip and blood group",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/donors?zip=263153&bloodGroup=A%2B",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"donors"
+							],
+							"query": [
+								{
+									"key": "zip",
+									"value": "263153"
+								},
+								{
+									"key": "bloodGroup",
+									"value": "A%2B"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Donor",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/donor/77",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"donor",
+								"77"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Donor",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/donor/26",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"donor",
+								"26"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find by status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/donors?status=ACTIVE",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"donors"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "ACTIVE"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Donor Status",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"status\":\"ACTIVE\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/donor/28",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"donor",
+								"28"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Recipient",
+			"item": [
+				{
+					"name": "Register Blood Recipient",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/rohit/Downloads/Signature.jpg"
+								},
+								{
+									"key": "request",
+									"value": "{\n\t\"patientName\":\"Rohit Agarwal\",\n\t\"gender\":\"M\",\n\t\"requiredBloodGroup\":\"A+\",\n\t\"bloodUnit\":4,\n\t\"date\":\"12-09-2019\",\n\t\"hospitalName\":\"Paras Hospital\",\n\t\"city\":\"Gurgaon\",\n\t\"pincode\":\"263153\",\n\t\"contactName\":\"Bhavna\",\n\t\"emailId\":\"bhavna@gmail.com\",\n\t\"phoneNumber\":\"7411608536\",\n\t\"reason\":\"Road Accident\"\n}",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/recipient",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"recipient"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all recipients",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/recipients",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"recipients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Recipient",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/recipient/77",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"recipient",
+								"77"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Recipient",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/recipient/26",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"recipient",
+								"26"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Recipient Status",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"status\":\"REJECTED\",\n\t\"comment\":\"This is fake request\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/recipient/34",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"recipient",
+								"34"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
